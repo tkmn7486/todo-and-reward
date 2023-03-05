@@ -18,7 +18,7 @@
     <div id="gacha_perform" class="gacha-perform" v-else-if="now_view == 'perform'">
       <!-- <video autoplay muted playsinline preload="auto" id="gacha_video" src="../assets/gacha_performance.mp4"></video> -->
       <video :class="now_video_view" muted playsinline preload="auto" id="gacha_video">
-        <source :src="require('../assets/movie/'+movie_name+'.mp4')" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+        <source :src="require('../assets/movie/'+movie_name+'.mp4')" type='video/mp4'>
       </video>
       <!-- <img :src="gp_perform" class="gacha-img"> -->
     </div>
@@ -35,9 +35,9 @@
 
     <div class="loading-view" v-else-if="now_view == 'loading'">
         loading now ...
-        <video src="../assets/movie/normal.mp4" class="gacha-video-inv" preload="auto"></video>
-        <video src="../assets/movie/sr.mp4" class="gacha-video-inv" preload="auto"></video>
-        <video src="../assets/movie/ssr.mp4" class="gacha-video-inv" preload="auto"></video>
+        <video src="../assets/movie/normal.mp4" class="gacha-video-inv" preload="auto" muted></video>
+        <video src="../assets/movie/sr.mp4" class="gacha-video-inv" preload="auto" muted></video>
+        <video src="../assets/movie/ssr.mp4" class="gacha-video-inv" preload="auto" muted></video>
     </div>
     
     <!-- エラー -->
