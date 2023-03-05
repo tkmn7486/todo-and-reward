@@ -35,6 +35,9 @@
 
     <div class="loading-view" v-else-if="now_view == 'loading'">
         loading now ...
+        <video src="../assets/movie/normal.mp4" class="gacha-video-inv" preload="auto"></video>
+        <video src="../assets/movie/sr.mp4" class="gacha-video-inv" preload="auto"></video>
+        <video src="../assets/movie/ssr.mp4" class="gacha-video-inv" preload="auto"></video>
     </div>
     
     <!-- エラー -->
