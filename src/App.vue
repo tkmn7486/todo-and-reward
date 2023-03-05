@@ -1,10 +1,41 @@
 <template>
   <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link to="/">タスク</router-link> |
+    <router-link to="/gacha">ガチャ</router-link>
+    <p>所持：{{ now_point }} 🪙</p>
   </nav>
   <router-view/>
 </template>
+
+<script>
+import {ref, onMounted} from 'vue'
+export default {
+  name:"app",
+  setup(){
+    let now_point = ref(0)
+
+    const getNowPoint=()=>{
+      now_point.value = localStorage.getItem('now_point')
+    }
+
+    onMounted(()=>{
+      let point = localStorage.getItem('now_point')
+      if(point == null){
+        now_point.value = 0
+        localStorage.setItem('now_point', 0)
+      }else{
+        getNowPoint()
+        setInterval(getNowPoint,5000)
+      }
+    })
+    return{
+      now_point,
+      getNowPoint
+    }
+  }
+}
+
+</script>
 
 <style>
 #app {
