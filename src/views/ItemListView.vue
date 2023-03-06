@@ -11,13 +11,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr v-for="item in item_list" :key="item.id">
             <td>
               <div class="table-item-icon-frame">
-                <img src= "../assets/ticket_normal.png" class="table-item-icon">
+                <img :src= "require('../assets/'+item.img)" class="table-item-icon">
               </div>
             </td>
-            <td></td>
+            <td>{{ item.name }}</td>
           </tr>
         </tbody>
       </table>
@@ -28,6 +28,26 @@
     </div>
   </div>
 </template>
+
+<script>
+import {ref,onMounted} from 'vue'
+export default {
+  name: 'HomeView',
+  setup(){
+    let item_list = ref([])
+
+    onMounted(()=>{
+      setInterval(() => {
+        item_list.value = JSON.parse(localStorage.getItem('my_items'))
+        console.log('item_list:',item_list.value)
+      }, 1000);
+    })
+    return{
+      item_list
+    }
+  }
+}
+</script>
 
 <style>
 .table-icon-place{

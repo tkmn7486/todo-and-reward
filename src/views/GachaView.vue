@@ -169,6 +169,13 @@ export default {
                         console.log('SSRの'+random+'番を選択')
                         get_prize.value = gacha_data.value[0].ssr[random]
                         console.log('獲得アイテム：', get_prize.value)
+                        if(localStorage.getItem('my_items') != null){
+                            let item_list = JSON.parse(localStorage.getItem('my_items'))
+                            item_list.push(get_prize.value)
+                            localStorage.setItem('my_items',JSON.stringify(item_list))
+                        }else{
+                            localStorage.setItem('my_items',JSON.stringify([get_prize.value]))
+                        }
                         prize_name.value = gacha_data.value[0].ssr[random].name
                         prize_img.value = gacha_data.value[0].ssr[random].img
                     }else if(prize_movie_type.value == 'sr'){
@@ -176,6 +183,13 @@ export default {
                         console.log('SRの'+random+'番を選択')
                         get_prize.value = gacha_data.value[0].sr[random]
                         console.log('獲得アイテム：', get_prize.value)
+                        if(localStorage.getItem('my_items') != null){
+                            let item_list = JSON.parse(localStorage.getItem('my_items'))
+                            item_list.push(get_prize.value)
+                            localStorage.setItem('my_items',JSON.stringify(item_list))
+                        }else{
+                            localStorage.setItem('my_items',JSON.stringify([get_prize.value]))
+                        }
                         prize_name.value = gacha_data.value[0].sr[random].name
                         prize_img.value = gacha_data.value[0].sr[random].img
                     }else{
@@ -183,6 +197,13 @@ export default {
                         console.log('Rの'+random+'番を選択')
                         get_prize.value = gacha_data.value[0].r[random]
                         console.log('獲得アイテム：', get_prize.value)
+                        if(localStorage.getItem('my_items') != null){
+                            let item_list = JSON.parse(localStorage.getItem('my_items'))
+                            item_list.push(get_prize.value)
+                            localStorage.setItem('my_items',JSON.stringify(item_list))
+                        }else{
+                            localStorage.setItem('my_items',JSON.stringify([get_prize.value]))
+                        }
                         prize_name.value = gacha_data.value[0].r[random].name
                         prize_img.value = gacha_data.value[0].r[random].img
                     }
@@ -227,6 +248,9 @@ export default {
         console.log('now_point:',now_point.value)
         setTimeout(() => {
             console.log('消費コイン:',gacha_setting.value[0].spend_coins)
+        }, 1000);
+        setInterval(() => {
+            now_point.value = localStorage.getItem('now_point')
         }, 1000);
     })
     return{
