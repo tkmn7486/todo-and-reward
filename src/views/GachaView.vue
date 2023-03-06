@@ -27,8 +27,8 @@
     <div class="gacha-result" v-else-if="now_view == 'result'">
       <h3 class="get-prize-p-title">🎁 獲得 🎁</h3>
       <div class="card">
-        <img :src="require('../assets/'+get_prize.img)" class="get-item-img">
-        <p>{{ get_prize.name }}</p>
+        <img :src="require('../assets/'+prize_img)" class="get-item-img">
+        <p>{{ prize_name }}</p>
       </div>
       <button class="btn btn-outline-dark" @click="now_view = 'main'">戻る</button>
     </div> 
@@ -64,6 +64,10 @@ export default {
     let now_video_view = ref('gacha-video-inv')
 
     let movie_name = ref('')
+
+    let prize_name=ref('')
+    let prize_movie_type=ref('')
+    let prize_img=ref('')
 
     const getGachaData=async()=>{
         let comp_data1 = []
@@ -140,27 +144,38 @@ export default {
     const playGacha=async(gacha_type,times)=>{
         let choice = confirm(times+'回引きますか？')
         if(choice == true){
-            get_prize.value = []
+            prize_name.value = ''
+            prize_movie_type.value = ''
+            prize_img.value = ''
             if(gacha_type == 'gold'){
                 console.log('goldのガチャを実行')
                 let random_value = Math.floor(Math.random() * 100);
+                while(random_value == 0){
+                    random_value = Math.floor(Math.random() * 100);
+                }
                 // random_value = 20
                 console.log('乱数：', random_value)
                 //レアリティの配列でループ
-                console.log('景品数：', gacha_data.value[0].gold.value.length)
-                for ( let i = 0; i < gacha_data.value[0].gold.value.length; i++ ) {
+                console.log('景品総数：', gacha_data.value[0].gold.value.length)
+                let rate = 0
+                for (let i=0; i < gacha_data.value[0].gold.value.length; i++) {
+                    console.log('item:', gacha_data.value[0].gold.value[i])
+                    rate += Number(gacha_data.value[0].gold.value[i].prob)
+                    console.log('rate change:', rate)
                     //乱数が現在値未満なら当たり
-                    if ( random_value >= gacha_data.value[0].gold.value[i].prob ) {
+                    if ( random_value <= rate ) {
                         console.log('あたり:',gacha_data.value[0].gold.value[i])
-                        get_prize.value = gacha_data.value[0].gold.value[i]
+                        prize_name.value = gacha_data.value[0].gold.value[i].name
+                        prize_movie_type.value = gacha_data.value[0].gold.value[i].movie_type 
+                        prize_img.value = gacha_data.value[0].gold.value[i].img
                         break
                     }else{
                         continue
                     }
                 }
             }
-            console.log("動画タイプ：",get_prize.value)
-            movie_name.value = get_prize.value.movie_type
+            console.log("動画タイプ：",prize_movie_type.value)
+            movie_name.value = prize_movie_type.value
             now_view.value = "perform"
             setTimeout(() => {
                 getGachaVideo()
@@ -202,6 +217,9 @@ export default {
       video_status,
       video_duration,
       movie_name,
+      prize_name,
+      prize_movie_type,
+      prize_img,
       playGacha,
       getGachaData,
       getGachaVideo,
