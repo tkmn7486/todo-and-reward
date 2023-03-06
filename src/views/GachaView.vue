@@ -35,7 +35,7 @@
 
     <div class="loading-view" v-else-if="now_view == 'loading'">
         loading now ...
-        <video src="../assets/movie/normal.mp4" class="gacha-video-inv" preload="auto" muted></video>
+        <video src="../assets/movie/r.mp4" class="gacha-video-inv" preload="auto" muted></video>
         <video src="../assets/movie/sr.mp4" class="gacha-video-inv" preload="auto" muted></video>
         <video src="../assets/movie/ssr.mp4" class="gacha-video-inv" preload="auto" muted></video>
     </div>
@@ -71,14 +71,12 @@ export default {
 
     const getGachaData=async()=>{
         let comp_data1 = []
-        let comp_data2 = []
-        let comp_data3 = []
         gacha_setting.value = []
 
         gacha_data.value = []
 
         let data1 = await axios.get('https://sheets.googleapis.com/v4/spreadsheets/1GRckIW0juHtiFHNSok8es6oW_miOV_9TNdiw7gLWnwc/values/ガチャ景品(金)!A1:E100?key=AIzaSyBYGo-htizvE31sI-GGUkMRsK0nZ7i5Wmw')
-        comp_data1.value = []
+        comp_data1 = [{r:[],sr:[],ssr:[]}]
         gacha_setting.value.push(
             {
                 gacha_id:"gold",
@@ -87,56 +85,46 @@ export default {
             }
         )
         for(let i=2; i<data1.data.values.length;i++){
-            comp_data1.value.push(
-                {
-                    name: data1.data.values[i][0],
-                    img: data1.data.values[i][1],
-                    explain: data1.data.values[i][2],
-                    prob: data1.data.values[i][3],
-                    movie_type: data1.data.values[i][4]
-                }
-            )
+            if(data1.data.values[i][4]=='ssr'){
+                // SSRレアリティの配列へ追加
+                comp_data1[0].ssr.push(
+                    {
+                        name: data1.data.values[i][0],
+                        img: data1.data.values[i][1],
+                        explain: data1.data.values[i][2],
+                        prob: data1.data.values[i][3],
+                        movie_type: data1.data.values[i][4]
+                    }
+                )
+            }else if(data1.data.values[i][4]=='sr'){
+                // SRレアリティの配列へ追加
+                comp_data1[0].sr.push(
+                    {
+                        name: data1.data.values[i][0],
+                        img: data1.data.values[i][1],
+                        explain: data1.data.values[i][2],
+                        prob: data1.data.values[i][3],
+                        movie_type: data1.data.values[i][4]
+                    }
+                )
+            }else{
+                // Rレアリティの配列へ追加
+                comp_data1[0].r.push(
+                    {
+                        name: data1.data.values[i][0],
+                        img: data1.data.values[i][1],
+                        explain: data1.data.values[i][2],
+                        prob: data1.data.values[i][3],
+                        movie_type: data1.data.values[i][4]
+                    }
+                )
+            }
         }
         console.log('data1完了')
 
-        let data2 = await axios.get('https://sheets.googleapis.com/v4/spreadsheets/1GRckIW0juHtiFHNSok8es6oW_miOV_9TNdiw7gLWnwc/values/ガチャ景品(銀) !A2:E100?key=AIzaSyBYGo-htizvE31sI-GGUkMRsK0nZ7i5Wmw')
-        comp_data2.value = []
-        for(let i=1; i<data2.data.values.length;i++){
-            comp_data2.value.push(
-                {
-                    name: data2.data.values[i][0],
-                    img: data2.data.values[i][1],
-                    explain: data2.data.values[i][2],
-                    prob: data2.data.values[i][3],
-                    movie_type: data2.data.values[i][4],
-                }
-            )
-        }
-        console.log('data2完了')
+        gacha_data.value = comp_data1
 
-        let data3 = await axios.get('https://sheets.googleapis.com/v4/spreadsheets/1GRckIW0juHtiFHNSok8es6oW_miOV_9TNdiw7gLWnwc/values/ガチャ景品(銅)!A2:E100?key=AIzaSyBYGo-htizvE31sI-GGUkMRsK0nZ7i5Wmw')
-        comp_data3.value = []
-        for(let i=1; i<data3.data.values.length;i++){
-            comp_data3.value.push(
-                {
-                    name: data3.data.values[i][0],
-                    img: data3.data.values[i][1],
-                    explain: data3.data.values[i][2],
-                    prob: data3.data.values[i][3],
-                    movie_type: data3.data.values[i][4]
-                }
-            )
-        }
-        console.log('data3完了')
-
-        gacha_data.value.push(
-            {
-                gold: comp_data1,
-                silver: comp_data2,
-                bronze: comp_data3
-            }
-        )
-        console.log('ガチャのデータ：',gacha_data.value[0].gold)
+        console.log('ガチャのデータ：',gacha_data.value)
 
         now_view.value = 'main'
     }
@@ -150,28 +138,45 @@ export default {
             if(gacha_type == 'gold'){
                 console.log('goldのガチャを実行')
                 let random_value = Math.floor(Math.random() * 100);
-                while(random_value == 0){
-                    random_value = Math.floor(Math.random() * 100);
+                console.log('レアリティ乱数：', random_value)
+
+                // レアリティ決定
+                if(random_value >=95){
+                    // SSRクラス
+                    prize_movie_type.value = 'ssr'
+                }else if(random_value >=75){
+                    // SRクラス
+                    prize_movie_type.value = 'sr'
+                }else{
+                    // Rクラス
+                    prize_movie_type.value = 'r'
                 }
-                // random_value = 20
-                console.log('乱数：', random_value)
-                //レアリティの配列でループ
-                console.log('景品総数：', gacha_data.value[0].gold.value.length)
-                let rate = 0
-                for (let i=0; i < gacha_data.value[0].gold.value.length; i++) {
-                    console.log('item:', gacha_data.value[0].gold.value[i])
-                    rate += Number(gacha_data.value[0].gold.value[i].prob)
-                    console.log('rate change:', rate)
-                    //乱数が現在値未満なら当たり
-                    if ( random_value <= rate ) {
-                        console.log('あたり:',gacha_data.value[0].gold.value[i])
-                        prize_name.value = gacha_data.value[0].gold.value[i].name
-                        prize_movie_type.value = gacha_data.value[0].gold.value[i].movie_type 
-                        prize_img.value = gacha_data.value[0].gold.value[i].img
-                        break
-                    }else{
-                        continue
-                    }
+
+                console.log('レアリティ確定:',prize_movie_type.value)
+
+                console.log('配列中身：',gacha_data.value[0].sr)
+
+                if(prize_movie_type.value == 'ssr'){
+                    let random = Math.floor(Math.random() * Number(gacha_data.value[0].ssr.length));
+                    console.log('SSRの'+random+'番を選択')
+                    get_prize.value = gacha_data.value[0].ssr[random]
+                    console.log('獲得アイテム：', get_prize.value)
+                    prize_name.value = gacha_data.value[0].ssr[random].name
+                    prize_img.value = gacha_data.value[0].ssr[random].img
+                }else if(prize_movie_type.value == 'sr'){
+                    let random = Math.floor(Math.random() * Number(gacha_data.value[0].sr.length));
+                    console.log('SRの'+random+'番を選択')
+                    get_prize.value = gacha_data.value[0].sr[random]
+                    console.log('獲得アイテム：', get_prize.value)
+                    prize_name.value = gacha_data.value[0].sr[random].name
+                    prize_img.value = gacha_data.value[0].sr[random].img
+                }else{
+                    let random = Math.floor(Math.random() * Number(gacha_data.value[0].r.length));
+                    console.log('Rの'+random+'番を選択')
+                    get_prize.value = gacha_data.value[0].r[random]
+                    console.log('獲得アイテム：', get_prize.value)
+                    prize_name.value = gacha_data.value[0].r[random].name
+                    prize_img.value = gacha_data.value[0].r[random].img
                 }
             }
             console.log("動画タイプ：",prize_movie_type.value)
