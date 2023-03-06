@@ -69,6 +69,9 @@ export default {
     let prize_movie_type=ref('')
     let prize_img=ref('')
 
+    // 現在のコイン数
+    let now_point = ref(0)
+
     const getGachaData=async()=>{
         let comp_data1 = []
         gacha_setting.value = []
@@ -132,59 +135,65 @@ export default {
     const playGacha=async(gacha_type,times)=>{
         let choice = confirm(times+'回引きますか？')
         if(choice == true){
-            prize_name.value = ''
-            prize_movie_type.value = ''
-            prize_img.value = ''
-            if(gacha_type == 'gold'){
-                console.log('goldのガチャを実行')
-                let random_value = Math.floor(Math.random() * 100);
-                console.log('レアリティ乱数：', random_value)
+            if(now_point.value < gacha_setting.value[0].spend_coins){
+                alert('コインが足りません')
+            }else{
+                now_point.value = Number(now_point.value)-Number(gacha_setting.value[0].spend_coins)
+                localStorage.setItem('now_point',now_point.value)
+                prize_name.value = ''
+                prize_movie_type.value = ''
+                prize_img.value = ''
+                if(gacha_type == 'gold'){
+                    console.log('goldのガチャを実行')
+                    let random_value = Math.floor(Math.random() * 100);
+                    console.log('レアリティ乱数：', random_value)
 
-                // レアリティ決定
-                if(random_value >=95){
-                    // SSRクラス
-                    prize_movie_type.value = 'ssr'
-                }else if(random_value >=75){
-                    // SRクラス
-                    prize_movie_type.value = 'sr'
-                }else{
-                    // Rクラス
-                    prize_movie_type.value = 'r'
+                    // レアリティ決定
+                    if(random_value >=95){
+                        // SSRクラス
+                        prize_movie_type.value = 'ssr'
+                    }else if(random_value >=75){
+                        // SRクラス
+                        prize_movie_type.value = 'sr'
+                    }else{
+                        // Rクラス
+                        prize_movie_type.value = 'r'
+                    }
+
+                    console.log('レアリティ確定:',prize_movie_type.value)
+
+                    console.log('配列中身：',gacha_data.value[0].sr)
+
+                    if(prize_movie_type.value == 'ssr'){
+                        let random = Math.floor(Math.random() * Number(gacha_data.value[0].ssr.length));
+                        console.log('SSRの'+random+'番を選択')
+                        get_prize.value = gacha_data.value[0].ssr[random]
+                        console.log('獲得アイテム：', get_prize.value)
+                        prize_name.value = gacha_data.value[0].ssr[random].name
+                        prize_img.value = gacha_data.value[0].ssr[random].img
+                    }else if(prize_movie_type.value == 'sr'){
+                        let random = Math.floor(Math.random() * Number(gacha_data.value[0].sr.length));
+                        console.log('SRの'+random+'番を選択')
+                        get_prize.value = gacha_data.value[0].sr[random]
+                        console.log('獲得アイテム：', get_prize.value)
+                        prize_name.value = gacha_data.value[0].sr[random].name
+                        prize_img.value = gacha_data.value[0].sr[random].img
+                    }else{
+                        let random = Math.floor(Math.random() * Number(gacha_data.value[0].r.length));
+                        console.log('Rの'+random+'番を選択')
+                        get_prize.value = gacha_data.value[0].r[random]
+                        console.log('獲得アイテム：', get_prize.value)
+                        prize_name.value = gacha_data.value[0].r[random].name
+                        prize_img.value = gacha_data.value[0].r[random].img
+                    }
                 }
-
-                console.log('レアリティ確定:',prize_movie_type.value)
-
-                console.log('配列中身：',gacha_data.value[0].sr)
-
-                if(prize_movie_type.value == 'ssr'){
-                    let random = Math.floor(Math.random() * Number(gacha_data.value[0].ssr.length));
-                    console.log('SSRの'+random+'番を選択')
-                    get_prize.value = gacha_data.value[0].ssr[random]
-                    console.log('獲得アイテム：', get_prize.value)
-                    prize_name.value = gacha_data.value[0].ssr[random].name
-                    prize_img.value = gacha_data.value[0].ssr[random].img
-                }else if(prize_movie_type.value == 'sr'){
-                    let random = Math.floor(Math.random() * Number(gacha_data.value[0].sr.length));
-                    console.log('SRの'+random+'番を選択')
-                    get_prize.value = gacha_data.value[0].sr[random]
-                    console.log('獲得アイテム：', get_prize.value)
-                    prize_name.value = gacha_data.value[0].sr[random].name
-                    prize_img.value = gacha_data.value[0].sr[random].img
-                }else{
-                    let random = Math.floor(Math.random() * Number(gacha_data.value[0].r.length));
-                    console.log('Rの'+random+'番を選択')
-                    get_prize.value = gacha_data.value[0].r[random]
-                    console.log('獲得アイテム：', get_prize.value)
-                    prize_name.value = gacha_data.value[0].r[random].name
-                    prize_img.value = gacha_data.value[0].r[random].img
-                }
+                console.log("動画タイプ：",prize_movie_type.value)
+                movie_name.value = prize_movie_type.value
+                now_view.value = "perform"
+                setTimeout(() => {
+                    getGachaVideo()
+                }, 500);
             }
-            console.log("動画タイプ：",prize_movie_type.value)
-            movie_name.value = prize_movie_type.value
-            now_view.value = "perform"
-            setTimeout(() => {
-                getGachaVideo()
-            }, 500);
         }
     }
 
@@ -214,6 +223,11 @@ export default {
 
     onMounted(()=>{
         getGachaData()
+        now_point.value = localStorage.getItem('now_point')
+        console.log('now_point:',now_point.value)
+        setTimeout(() => {
+            console.log('消費コイン:',gacha_setting.value[0].spend_coins)
+        }, 1000);
     })
     return{
       now_view,
@@ -228,6 +242,7 @@ export default {
       prize_name,
       prize_movie_type,
       prize_img,
+      now_point,
       playGacha,
       getGachaData,
       getGachaVideo,

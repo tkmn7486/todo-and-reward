@@ -13,9 +13,9 @@ const routes = [
     component: () => import('../views/GachaView.vue')
   },
   {
-    path: '/about',
-    name: 'about',
-    component: () => import('../views/AboutView.vue')
+    path: '/item_list',
+    name: 'item_list',
+    component: () => import('../views/ItemListView.vue')
   }
 ]
 

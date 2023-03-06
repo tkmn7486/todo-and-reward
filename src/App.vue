@@ -1,7 +1,8 @@
 <template>
   <nav>
     <router-link to="/">タスク</router-link> |
-    <router-link to="/gacha">ガチャ</router-link>
+    <router-link to="/gacha">ガチャ</router-link> |
+    <router-link to="/item_list">所持品</router-link>
     <p>所持：{{ now_point }} 🪙</p>
   </nav>
   <router-view/>
@@ -25,7 +26,7 @@ export default {
         localStorage.setItem('now_point', 0)
       }else{
         getNowPoint()
-        setInterval(getNowPoint,5000)
+        setInterval(getNowPoint,2000)
       }
     })
     return{
