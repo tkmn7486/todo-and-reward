@@ -99,7 +99,6 @@ export default {
                         name: data1.data.values[i][0],
                         img: data1.data.values[i][1],
                         explain: data1.data.values[i][2],
-                        prob: data1.data.values[i][3],
                         movie_type: data1.data.values[i][4]
                     }
                 )
@@ -110,7 +109,6 @@ export default {
                         name: data1.data.values[i][0],
                         img: data1.data.values[i][1],
                         explain: data1.data.values[i][2],
-                        prob: data1.data.values[i][3],
                         movie_type: data1.data.values[i][4]
                     }
                 )
@@ -121,7 +119,6 @@ export default {
                         name: data1.data.values[i][0],
                         img: data1.data.values[i][1],
                         explain: data1.data.values[i][2],
-                        prob: data1.data.values[i][3],
                         movie_type: data1.data.values[i][4]
                     }
                 )

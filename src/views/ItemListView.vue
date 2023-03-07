@@ -2,22 +2,33 @@
   <div class="item_list">
     <!-- 現在の所持品 -->
     <div class="now-in-possession card sub-card" v-if="now_view == 'hold_items'">
-      <h4>-- 所持品 --</h4>
+      <h4 class="page-title">所持品</h4>
       <table class="table">
         <thead>
           <tr>
-            <th class="table-icon-place"></th>
             <th></th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="item,index in item_list" :key="item.id">
             <td>
-              <div class="table-item-icon-frame">
-                <img :src= "require('../assets/'+item.img)" class="table-item-icon">
+              <div :class="'card '+item.movie_type">
+                <table>
+                  <tr>
+                    <td class="table-icon-place">
+                      <div class="table-item-icon-frame">
+                        <img :src= "require('../assets/'+item.img)" class="table-item-icon">
+                      </div>
+                    </td>
+                    <td class="table-item-name-place">
+                      <div class="table-item-name-frame" @click="openItemDetail(item,index)">
+                        {{ item.name }}
+                      </div>
+                    </td>
+                  </tr>
+                </table>
               </div>
             </td>
-            <td @click="openItemDetail(item,index)">{{ item.name }}</td>
           </tr>
         </tbody>
       </table>
@@ -29,8 +40,12 @@
 
     <!-- アイテム詳細 -->
     <div class="item-detail" v-else-if="now_view == 'detail'">
-      <div class="card sub-card">
-        <img :src="require('../assets/'+selected_item[0].img)" class="card-img-top">
+      <div :class="'card sub-card item-detail-card '+selected_item[0].rare">
+        <div class="item-detail-card-img">
+          <div class="large-item-icon-frame">
+            <img :src="require('../assets/'+selected_item[0].img)" class="card-img-top">
+          </div>
+        </div>
         <div class="card-body">
           <h5 class="card-title">{{ selected_item[0].name }}</h5>
           <p class="card-text">{{ selected_item[0].explain }}</p>
@@ -63,7 +78,8 @@ export default {
           index:index,
           name:item.name,
           img: item.img,
-          explain:item.explain
+          explain:item.explain,
+          rare:item.movie_type,
         }
       )
       now_view.value = 'detail'
@@ -96,6 +112,11 @@ export default {
 </script>
 
 <style>
+.page-title{
+  margin-top: 20px;
+  font-weight: bold;
+}
+
 .table-icon-place{
   width: 100px;
 }
@@ -108,6 +129,18 @@ export default {
   background-color: rgba(0, 0, 0, 0.818);
 }
 
+.large-item-icon-frame{
+  width: 130px;
+  height: 130px;
+  background-color: rgba(0, 0, 0, 0.818);
+  margin:0 auto;
+}
+
+.table-item-name-frame{
+  font-weight: bold;
+  color:rgba(36, 36, 36, 0.575)
+}
+
 .table-item-icon{
   width: 50px;
   margin: auto 0;
@@ -117,6 +150,50 @@ export default {
 .sub-card{
   width: 95%;
   margin: 0 auto;
+}
+
+.table-icon-place{
+  height: 60px;
+  width: 60px;
+}
+
+.item-detail-card-img{
+  border: solid 1px rgba(75, 75, 75, 0.52);
+  border-radius: 2px;
+  margin:5px;
+  padding:10px;
+  background-color: rgb(0, 0, 0);
+}
+
+.r{
+  background: linear-gradient(45deg, #a57e65 0%, #a57e65 45%, #f3cfb8 70%, #a57e65 85%, #a57e65 90% 100%);
+  background-size: 800% 400%;
+  animation: gradient 5s infinite cubic-bezier(.62, .28, .23, .99) both;
+}
+
+.sr{
+  background: linear-gradient(45deg, #757575 0%, #9E9E9E 45%, #E8E8E8 70%, #9E9E9E 85%, #757575 90% 100%);
+  background-size: 800% 400%;
+  animation: gradient 5s infinite cubic-bezier(.62, .28, .23, .99) both;
+}
+
+.ssr{
+  background: linear-gradient(45deg, #DAAF08 0%, #DAAF08 45%, #FEE9A0 70%, #DAAF08 85%, #DAAF08 90% 100%);
+  background-size: 800% 400%;
+  animation: gradient 5s infinite cubic-bezier(.62, .28, .23, .99) both;
+}
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 </style>
