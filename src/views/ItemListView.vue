@@ -45,7 +45,7 @@
 
 <script>
 import {ref,onMounted} from 'vue'
-// import {supabase} from '../supabase'
+import {supabase} from '../supabase'
 export default {
   name: 'HomeView',
   setup(){
@@ -69,10 +69,21 @@ export default {
       now_view.value = 'detail'
     }
 
-    onMounted(()=>{
-      setInterval(() => {
-        item_list.value = JSON.parse(localStorage.getItem('my_items'))
-      }, 1000);
+    onMounted(async()=>{
+      let {
+        data: item
+      } = await supabase.from('app_setting').select('type,contents');
+
+      console.log('取得データ：', item[0])
+
+      if(item[0].type == 'got_item_list'){
+        item_list.value = JSON.parse(item[0].contents)
+        console.log('got_item_list:', item_list.value)
+      }else{
+        item_list.value = JSON.parse(item[1].contents)
+        console.log('got_item_list:', item_list.value)
+      }
+      localStorage.setItem('my_items',JSON.stringify(item_list.value))
     })
     return{
       now_view,

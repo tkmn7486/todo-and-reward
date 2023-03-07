@@ -172,19 +172,25 @@ export default {
 
                     console.log('配列中身：',gacha_data.value[0].sr)
 
+                    let json_file = localStorage.getItem('my_items')
+                    let item_list = JSON.parse(json_file)
+                    console.log("アイテムリストの１つ目",item_list[2])
                     if(prize_movie_type.value == 'ssr'){
                         let random = Math.floor(Math.random() * Number(gacha_data.value[0].ssr.length));
                         console.log('SSRの'+random+'番を選択')
                         get_prize.value = gacha_data.value[0].ssr[random]
                         console.log('獲得アイテム：', get_prize.value)
                         if(localStorage.getItem('my_items') != null){
-                            let item_list = JSON.parse(localStorage.getItem('my_items'))
-                            item_list.push(get_prize.value)
+                            console.log(item_list)
+                            console.log("獲得品：",get_prize.value)
+                            await item_list.push(get_prize.value)
                             localStorage.setItem('my_items',JSON.stringify(item_list))
-                            await supabase.from('got_item_list').insert([{item_data: item_list}]);
+                            await supabase.from('app_setting').delete().eq('type', "got_item_list")
+                            await supabase.from('app_setting').insert({type:"got_item_list",contents: item_list});
                         }else{
                             localStorage.setItem('my_items',JSON.stringify([get_prize.value]))
-                            await supabase.from('got_item_list').insert([{item_data: get_prize.value}]);
+                            await supabase.from('app_setting').delete().eq('type', "got_item_list")
+                            await supabase.from('app_setting').insert({type:"got_item_list",contents: get_prize.value});
                         }
                         prize_name.value = gacha_data.value[0].ssr[random].name
                         prize_img.value = gacha_data.value[0].ssr[random].img
@@ -194,13 +200,16 @@ export default {
                         get_prize.value = gacha_data.value[0].sr[random]
                         console.log('獲得アイテム：', get_prize.value)
                         if(localStorage.getItem('my_items') != null){
-                            let item_list = JSON.parse(localStorage.getItem('my_items'))
-                            item_list.push(get_prize.value)
+                            console.log("獲得品：",get_prize.value)
+                            console.log(item_list)
+                            await item_list.push(get_prize.value)
                             localStorage.setItem('my_items',JSON.stringify(item_list))
-                            await supabase.from('got_item_list').insert([{item_data: item_list}]);
+                            await supabase.from('app_setting').delete().eq('type', "got_item_list")
+                            await supabase.from('app_setting').insert({type:"got_item_list",contents: item_list});
                         }else{
                             localStorage.setItem('my_items',JSON.stringify([get_prize.value]))
-                            await supabase.from('got_item_list').insert([{item_data: get_prize.value}]);
+                            await supabase.from('app_setting').delete().eq('type', "got_item_list")
+                            await supabase.from('app_setting').insert({type:"got_item_list",contents: get_prize.value});
                         }
                         prize_name.value = gacha_data.value[0].sr[random].name
                         prize_img.value = gacha_data.value[0].sr[random].img
@@ -210,13 +219,16 @@ export default {
                         get_prize.value = gacha_data.value[0].r[random]
                         console.log('獲得アイテム：', get_prize.value)
                         if(localStorage.getItem('my_items') != null){
-                            let item_list = JSON.parse(localStorage.getItem('my_items'))
-                            item_list.push(get_prize.value)
+                            console.log("獲得品：",get_prize.value)
+                            console.log(item_list)
+                            await item_list.push(get_prize.value)
                             localStorage.setItem('my_items',JSON.stringify(item_list))
-                            await supabase.from('got_item_list').insert([{item_data: item_list}]);
+                            await supabase.from('app_setting').delete().eq('type', "got_item_list")
+                            await supabase.from('app_setting').insert({type:"got_item_list",contents: item_list});
                         }else{
                             localStorage.setItem('my_items',JSON.stringify([get_prize.value]))
-                            await supabase.from('got_item_list').insert([{item_data: get_prize.value}]);
+                            await supabase.from('app_setting').delete().eq('type', "got_item_list")
+                            await supabase.from('app_setting').insert({type:"got_item_list",contents: get_prize.value});
                         }
                         prize_name.value = gacha_data.value[0].r[random].name
                         prize_img.value = gacha_data.value[0].r[random].img
@@ -255,6 +267,7 @@ export default {
 
     onMounted(()=>{
         getGachaData()
+
         now_point.value = Number(localStorage.getItem('now_point'))
     })
     return{

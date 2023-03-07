@@ -90,11 +90,11 @@ export default {
       now_view.value = 'main'
     }
 
-    const getAchieve=async(item)=>{
+    const getAchieve=async(i)=>{
       let choose = confirm('項目を達成しましたか？')
       if(choose == true){
         let now_all_point = localStorage.getItem('now_point')
-        now_all_point = Number(now_all_point) + Number(item)
+        now_all_point = Number(now_all_point) + Number(i)
         localStorage.setItem('now_point', String(now_all_point));
 
         await supabase
@@ -111,7 +111,7 @@ export default {
             }
           );
         
-        alert(item+'ポイント獲得しました!')
+        alert(i+'ポイント獲得しました!')
         console.log('現在のポイント合計:', localStorage.getItem('now_point'))
       }
     }
@@ -123,10 +123,16 @@ export default {
     onMounted(async()=>{
       getTodoList()
       let {
-        data: point_json,
-      } = await supabase.from('app_setting').select('id,contents');
-      console.log('point:',point_json[0].contents)
-      localStorage.setItem('now_point',point_json[0].contents)
+        data: data,
+      } = await supabase.from('app_setting').select('id,type,contents');
+      
+      if(data[0].type == 'hold_point'){
+        console.log('point:',data[0].contents)
+        localStorage.setItem('now_point',data[0].contents)
+      }else{
+        console.log('point:',data[1].contents)
+        localStorage.setItem('now_point',data[1].contents)
+      }
     })
     return{
       now_view,

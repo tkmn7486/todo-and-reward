@@ -20,6 +20,7 @@
 <script>
 import {ref, onMounted} from 'vue'
 import { useRouter } from 'vue-router'
+import {supabase} from './supabase'
 
 export default {
   name:"app",
@@ -30,9 +31,25 @@ export default {
 
     const getNowPoint=()=>{
       now_point.value = localStorage.getItem('now_point')
+      console.log('ゲンポイント：',now_point.value)
     }
 
-    const forceReload=()=>{
+    const forceReload=async()=>{
+      let {
+        data: point
+      } = await supabase.from('app_setting').select("type,contents");
+
+      if(point[0].type=='hold_point'){
+        localStorage.setItem('now_point', Number(point[0].contents))
+        localStorage.setItem('my_items', JSON.stringify(point[1].contents))
+        console.log("ポイント：",point[0].contents)
+        console.log("アイテムリスト：",point[1].contents)
+      }else{
+        localStorage.setItem('now_point', Number(point[1].contents))
+        localStorage.setItem('my_items', JSON.stringify(point[0].contents))
+        console.log("ポイント：",point[1].contents)
+        console.log("アイテムリスト：",point[0].contents)
+      }
       router.go({path: router.currentRoute.path, force: true})
     }
 
@@ -42,7 +59,6 @@ export default {
         now_point.value = 0
         localStorage.setItem('now_point', 0)
       }else{
-        getNowPoint()
         setInterval(getNowPoint,2000)
       }
     })
