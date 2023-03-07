@@ -18,7 +18,7 @@
     <!-- ガチャ演出画面 -->
     <div id="gacha_perform" class="gacha-perform" v-else-if="now_view == 'perform'">
       <!-- <video autoplay muted playsinline preload="auto" id="gacha_video" src="../assets/gacha_performance.mp4"></video> -->
-      <video :class="now_video_view" muted playsinline preload="auto" id="gacha_video">
+      <video :class="now_video_view" muted playsinline preload="auto" id="gacha_video" @ended="videoEnded">
         <source :src="require('../assets/movie/'+movie_name+'.mp4')" type='video/mp4'>
       </video>
       <!-- <img :src="gp_perform" class="gacha-img"> -->
@@ -246,14 +246,11 @@ export default {
     const gachaVideo=()=>{
         now_video_view.value = 'gacha-video-active'
         video_status.value.play()
+    }
 
-        console.log('待機時間（m秒）:', video_duration.value*1000)
-
-        // 終了処理
-        setTimeout(()=>{
-            now_video_view.value = 'gacha-video-inv'
-            now_view.value = 'result'
-        }, video_duration.value*1000);
+    const videoEnded=()=>{
+        now_video_view.value = 'gacha-video-inv'
+        now_view.value = 'result'
     }
 
     onMounted(()=>{
@@ -277,7 +274,8 @@ export default {
       playGacha,
       getGachaData,
       getGachaVideo,
-      gachaVideo
+      gachaVideo,
+      videoEnded
     }
   }
 }

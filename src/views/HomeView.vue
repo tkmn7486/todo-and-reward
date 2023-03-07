@@ -2,9 +2,6 @@
   <div class="home">
     <!-- todoリスト -->
     <div class="todo-list card" v-if="now_view == 'main'">
-      <button @click="getFbData('app_setting','id,contents')" class="btn btn-outline-dark">FBデータ取得</button>
-      <button @click="addFbData">FBデータ追加</button>
-      <button @click="deleteFbData">FBデータ削除(id1)</button>
       <table class="table">
         <tbody>
           <tr v-for="todo in todo_list" :key="todo.id">
