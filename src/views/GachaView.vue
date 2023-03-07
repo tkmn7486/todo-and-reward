@@ -2,6 +2,7 @@
   <div id="app">
     <!-- ガチャ一覧 -->
     <div class="gacha-home" v-if="now_view == 'main'">
+        <p>コイン数：{{ gacha_setting.value}}</p>
         <div class="card gacha-card">
             <h3>{{ gacha_setting[0].gacha_name }}</h3>
             <img src="../assets/ticket_platinum.png">
@@ -50,6 +51,8 @@
 <script>
 import {ref,onMounted} from 'vue'
 import axios from 'axios'
+import {supabase} from '../supabase'
+
 export default {
   name: 'HomeView',
   setup(){
@@ -84,9 +87,10 @@ export default {
             {
                 gacha_id:"gold",
                 gacha_name:data1.data.values[0][3],
-                spend_coins:data1.data.values[0][1]
+                spend_coins: Number(data1.data.values[0][1])
             }
         )
+        console.log('ガチャの設定：', gacha_setting.value[0])
         for(let i=2; i<data1.data.values.length;i++){
             if(data1.data.values[i][4]=='ssr'){
                 // SSRレアリティの配列へ追加
@@ -135,10 +139,14 @@ export default {
     const playGacha=async(gacha_type,times)=>{
         let choice = confirm(times+'回引きますか？')
         if(choice == true){
-            if(now_point.value < gacha_setting.value[0].spend_coins){
+            if(Number(now_point.value) < gacha_setting.value[0].spend_coins){
+                console.log(now_point.value)
+                console.log(gacha_setting.value[0].spend_coins)
                 alert('コインが足りません')
             }else{
                 now_point.value = Number(now_point.value)-Number(gacha_setting.value[0].spend_coins)
+                await supabase.from('app_setting').delete().eq('type', 'hold_point')
+                await supabase.from('app_setting').insert({type:"hold_point",contents:now_point.value});
                 localStorage.setItem('now_point',now_point.value)
                 prize_name.value = ''
                 prize_movie_type.value = ''
@@ -173,8 +181,10 @@ export default {
                             let item_list = JSON.parse(localStorage.getItem('my_items'))
                             item_list.push(get_prize.value)
                             localStorage.setItem('my_items',JSON.stringify(item_list))
+                            await supabase.from('got_item_list').insert([{item_data: item_list}]);
                         }else{
                             localStorage.setItem('my_items',JSON.stringify([get_prize.value]))
+                            await supabase.from('got_item_list').insert([{item_data: get_prize.value}]);
                         }
                         prize_name.value = gacha_data.value[0].ssr[random].name
                         prize_img.value = gacha_data.value[0].ssr[random].img
@@ -187,8 +197,10 @@ export default {
                             let item_list = JSON.parse(localStorage.getItem('my_items'))
                             item_list.push(get_prize.value)
                             localStorage.setItem('my_items',JSON.stringify(item_list))
+                            await supabase.from('got_item_list').insert([{item_data: item_list}]);
                         }else{
                             localStorage.setItem('my_items',JSON.stringify([get_prize.value]))
+                            await supabase.from('got_item_list').insert([{item_data: get_prize.value}]);
                         }
                         prize_name.value = gacha_data.value[0].sr[random].name
                         prize_img.value = gacha_data.value[0].sr[random].img
@@ -201,8 +213,10 @@ export default {
                             let item_list = JSON.parse(localStorage.getItem('my_items'))
                             item_list.push(get_prize.value)
                             localStorage.setItem('my_items',JSON.stringify(item_list))
+                            await supabase.from('got_item_list').insert([{item_data: item_list}]);
                         }else{
                             localStorage.setItem('my_items',JSON.stringify([get_prize.value]))
+                            await supabase.from('got_item_list').insert([{item_data: get_prize.value}]);
                         }
                         prize_name.value = gacha_data.value[0].r[random].name
                         prize_img.value = gacha_data.value[0].r[random].img
@@ -244,14 +258,7 @@ export default {
 
     onMounted(()=>{
         getGachaData()
-        now_point.value = localStorage.getItem('now_point')
-        console.log('now_point:',now_point.value)
-        setTimeout(() => {
-            console.log('消費コイン:',gacha_setting.value[0].spend_coins)
-        }, 1000);
-        setInterval(() => {
-            now_point.value = localStorage.getItem('now_point')
-        }, 1000);
+        now_point.value = Number(localStorage.getItem('now_point'))
     })
     return{
       now_view,

@@ -1,7 +1,7 @@
 <template>
   <div class="item_list">
     <!-- 現在の所持品 -->
-    <div class="now-in-possession card">
+    <div class="now-in-possession card sub-card" v-if="now_view == 'hold_items'">
       <h4>-- 所持品 --</h4>
       <table class="table">
         <thead>
@@ -11,39 +11,74 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in item_list" :key="item.id">
+          <tr v-for="item,index in item_list" :key="item.id">
             <td>
               <div class="table-item-icon-frame">
                 <img :src= "require('../assets/'+item.img)" class="table-item-icon">
               </div>
             </td>
-            <td>{{ item.name }}</td>
+            <td @click="openItemDetail(item,index)">{{ item.name }}</td>
           </tr>
         </tbody>
       </table>
     </div>
     <!-- 全アイテム一覧 -->
-    <div class="all-item-list">
+    <div class="all-item-list" v-else-if="now_view == 'all_items'">
 
+    </div>
+
+    <!-- アイテム詳細 -->
+    <div class="item-detail" v-else-if="now_view == 'detail'">
+      <div class="card sub-card">
+        <img :src="require('../assets/'+selected_item[0].img)" class="card-img-top">
+        <div class="card-body">
+          <h5 class="card-title">{{ selected_item[0].name }}</h5>
+          <p class="card-text">{{ selected_item[0].explain }}</p>
+          <br>
+          <button class="btn btn-outline-dark">使用する</button>
+        </div>
+
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import {ref,onMounted} from 'vue'
+// import {supabase} from '../supabase'
 export default {
   name: 'HomeView',
   setup(){
+    let now_view = ref('hold_items')
     let item_list = ref([])
+
+    let selected_item = ref([])
+
+    const openItemDetail=(item,index)=>{
+      console.log('item:',item)
+      console.log('index:',index)
+      selected_item.value = []
+      selected_item.value.push(
+        {
+          index:index,
+          name:item.name,
+          img: item.img,
+          explain:item.explain
+        }
+      )
+      now_view.value = 'detail'
+    }
 
     onMounted(()=>{
       setInterval(() => {
         item_list.value = JSON.parse(localStorage.getItem('my_items'))
-        console.log('item_list:',item_list.value)
       }, 1000);
     })
     return{
-      item_list
+      now_view,
+      item_list,
+      selected_item,
+      openItemDetail
     }
   }
 }
@@ -66,6 +101,11 @@ export default {
   width: 50px;
   margin: auto 0;
   padding:3px;
+}
+
+.sub-card{
+  width: 95%;
+  margin: 0 auto;
 }
 
 </style>

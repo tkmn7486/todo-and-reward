@@ -2,6 +2,9 @@
   <div class="home">
     <!-- todoリスト -->
     <div class="todo-list card" v-if="now_view == 'main'">
+      <button @click="getFbData('app_setting','id,contents')" class="btn btn-outline-dark">FBデータ取得</button>
+      <button @click="addFbData">FBデータ追加</button>
+      <button @click="deleteFbData">FBデータ削除(id1)</button>
       <table class="table">
         <tbody>
           <tr v-for="todo in todo_list" :key="todo.id">
@@ -36,12 +39,41 @@
 <script>
 import {ref,onMounted} from 'vue'
 import axios from 'axios'
+import {supabase} from '../supabase'
+
 export default {
   name: 'HomeView',
   setup(){
     let now_view = ref('loading')
 
     let todo_list = ref([])
+
+    // データ取得
+    const getFbData=async(table_name, where_search)=>{
+      let {
+        data: name,
+        error,
+        status,
+      } = await supabase.from(table_name).select(where_search);
+
+      console.log(name);
+      console.log(error);
+      console.log(status);
+    }
+
+    const addFbData=async()=>{
+      await supabase
+        .from('got_item_list')
+        .insert([{item_data:'{name:"item"}'}]);
+    }
+
+    // supabaseの指定IDを削除
+    const deleteFbData=async()=>{
+      await supabase
+        .from('got_item_list')
+        .delete()
+        .eq('id', 2)
+    }
 
     const getTodoList=async()=>{
       todo_list.value = []
@@ -61,12 +93,27 @@ export default {
       now_view.value = 'main'
     }
 
-    const getAchieve=(item)=>{
+    const getAchieve=async(item)=>{
       let choose = confirm('項目を達成しましたか？')
       if(choose == true){
         let now_all_point = localStorage.getItem('now_point')
         now_all_point = Number(now_all_point) + Number(item)
         localStorage.setItem('now_point', String(now_all_point));
+
+        await supabase
+          .from('app_setting')
+          .delete()
+          .eq('type', 'hold_point')
+
+        await supabase
+          .from('app_setting')
+          .insert(
+            {
+              type:"hold_point",
+              contents:Number(now_all_point)
+            }
+          );
+        
         alert(item+'ポイント獲得しました!')
         console.log('現在のポイント合計:', localStorage.getItem('now_point'))
       }
@@ -76,8 +123,13 @@ export default {
       now_view.value = 'main'
     }
 
-    onMounted(()=>{
+    onMounted(async()=>{
       getTodoList()
+      let {
+        data: point_json,
+      } = await supabase.from('app_setting').select('id,contents');
+      console.log('point:',point_json[0].contents)
+      localStorage.setItem('now_point',point_json[0].contents)
     })
     return{
       now_view,
@@ -85,6 +137,9 @@ export default {
       getTodoList,
       getAchieve,
       backHome,
+      getFbData,
+      addFbData,
+      deleteFbData
     }
   }
 }
