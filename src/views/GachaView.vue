@@ -186,7 +186,7 @@ export default {
 
                     let json_file = localStorage.getItem('my_items')
                     let item_list = JSON.parse(json_file)
-                    console.log("アイテムリストの１つ目",item_list[0])
+                    // console.log("アイテムリストの１つ目",item_list[0])
                     if(prize_movie_type.value == 'ssr'){
                         let random = Math.floor(Math.random() * Number(gacha_data.value[0].ssr.length));
                         console.log('SSRの'+random+'番を選択')
