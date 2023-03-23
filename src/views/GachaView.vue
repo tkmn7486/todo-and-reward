@@ -184,8 +184,8 @@ export default {
 
                     console.log('配列中身：',gacha_data.value[0].sr)
 
-                    let json_file = localStorage.getItem('my_items')
-                    let item_list = JSON.parse(json_file)
+                    // let json_file = localStorage.getItem('my_items')
+                    // let item_list = JSON.parse(json_file)
                     // console.log("アイテムリストの１つ目",item_list[0])
                     if(prize_movie_type.value == 'ssr'){
                         let random = Math.floor(Math.random() * Number(gacha_data.value[0].ssr.length));
@@ -193,10 +193,10 @@ export default {
                         get_prize.value = gacha_data.value[0].ssr[random]
                         console.log('獲得アイテム：', get_prize.value)
                         if(localStorage.getItem('my_items') != null){
-                            console.log(item_list)
+                            // console.log(item_list)
                             console.log("獲得品：",get_prize.value)
-                            await item_list.push(get_prize.value)
-                            localStorage.setItem('my_items',JSON.stringify(item_list))
+                            // await item_list.push(get_prize.value)
+                            // localStorage.setItem('my_items',JSON.stringify(item_list))
                             await supabase.from('got_items').insert(
                                 {
                                     item_name: get_prize.value.name,
@@ -206,7 +206,7 @@ export default {
                                 }
                             );
                         }else{
-                            localStorage.setItem('my_items',JSON.stringify([get_prize.value]))
+                            // localStorage.setItem('my_items',JSON.stringify([get_prize.value]))
                             await supabase.from('got_items').insert(
                                 {
                                     item_name: get_prize.value.name,
@@ -225,9 +225,9 @@ export default {
                         console.log('獲得アイテム：', get_prize.value)
                         if(localStorage.getItem('my_items') != null){
                             console.log("獲得品：",get_prize.value)
-                            console.log(item_list)
-                            await item_list.push(get_prize.value)
-                            localStorage.setItem('my_items',JSON.stringify(item_list))
+                            // console.log(item_list)
+                            // await item_list.push(get_prize.value)
+                            // localStorage.setItem('my_items',JSON.stringify(item_list))
                             await supabase.from('got_items').insert(
                                 {
                                     item_name: get_prize.value.name,
@@ -256,9 +256,9 @@ export default {
                         console.log('獲得アイテム：', get_prize.value)
                         if(localStorage.getItem('my_items') != null){
                             console.log("獲得品：",get_prize.value)
-                            console.log(item_list)
+                            // console.log(item_list)
                             // await item_list.push(get_prize.value)
-                            localStorage.setItem('my_items',JSON.stringify(item_list))
+                            // localStorage.setItem('my_items',JSON.stringify(item_list))
                             await supabase.from('got_items').insert(
                                 {
                                     item_name: get_prize.value.name,
@@ -293,9 +293,9 @@ export default {
     }
 
     const getGachaVideo=async()=>{
-        while(document.getElementById('gacha_video')==null){
-            console.log('動画読み込み待機中...')
-        }
+        // while(document.getElementById('gacha_video')==null){
+        //     console.log('動画読み込み待機中...')
+        // }
         video_status.value = document.getElementById('gacha_video')
         console.log('video要素:', video_status.value)
         video_duration.value = video_status.value.duration
