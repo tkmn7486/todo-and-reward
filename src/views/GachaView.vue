@@ -3,19 +3,21 @@
     <!-- ガチャ一覧 -->
     <div class="gacha-home" v-if="now_view == 'main'">
         <p>コイン数：{{ now_point }}</p>
-        <div class="card gacha-card">
+        <div class="gacha-card">
             <h3>{{ gacha_setting[0].gacha_name }}</h3>
-            <img src="../assets/ticket_platinum.png">
+            <div class="gacha-img-place">
+                <img src="../assets/gacha.png">
+            </div>
             <div class="btn-toolbar gacha-play-btn-place">
                 <div class="btn-group">
-                    <button class="btn btn-outline-dark gacha-play-btn" @click="playGacha('gold',1)">1回 {{ gacha_setting[0].spend_coins }}コイン</button>
-                    <button class="btn btn-outline-dark gacha-play-btn" @click="playGacha('gold',6)">6回 {{ gacha_setting[0].spend_coins*5 }}コイン</button>
+                    <button class="btn btn-outline-dark gacha-play-btn" @click="playGacha('premium',1)">1回 {{ gacha_setting[0].spend_coins }}コイン</button>
+                    <button class="btn btn-outline-dark gacha-play-btn" @click="playGacha('premium',6)">6回 {{ gacha_setting[0].spend_coins*5 }}コイン</button>
                 </div>
             </div>
         </div>
         <br>
         <br>
-        <div class="card gacha-card">
+        <div class="gacha-card">
             <h3>{{ gacha_setting[0].gacha_name }}</h3>
             <img src="../assets/ticket_platinum.png">
             <div class="btn-toolbar gacha-play-btn-place">
@@ -98,7 +100,7 @@ export default {
         comp_data1 = [{r:[],sr:[],ssr:[]}]
         gacha_setting.value.push(
             {
-                gacha_id:"gold",
+                gacha_id:"premium",
                 gacha_name:data1.data.values[0][3],
                 spend_coins: Number(data1.data.values[0][1])
             }
@@ -161,8 +163,8 @@ export default {
                 prize_name.value = ''
                 prize_movie_type.value = ''
                 prize_img.value = ''
-                if(gacha_type == 'gold'){
-                    console.log('goldのガチャを実行')
+                if(gacha_type == 'premium'){
+                    console.log('premiumのガチャを実行')
                     let random_value = Math.floor(Math.random() * 100);
                     console.log('レアリティ乱数：', random_value)
 
@@ -371,10 +373,32 @@ export default {
     padding: 10px 0;
 }
 
+.btn-group{
+    margin:0 auto;
+}
+
 .get-prize{
     max-width: 80%;
     margin: 0 auto;
     max-height: 60%;
+}
+
+.btn{
+    z-index: 10;
+}
+
+.gacha-card{
+    width: 80%;
+    border:double 3px rgb(147, 147, 147);
+    border-radius:10px;
+}
+
+.gacha-card img{
+    width: 80%;
+}
+
+.gacha-card button{
+    margin:0 auto;
 }
 
 </style>
