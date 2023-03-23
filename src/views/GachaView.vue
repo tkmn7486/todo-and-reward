@@ -2,7 +2,7 @@
   <div id="app">
     <!-- ガチャ一覧 -->
     <div class="gacha-home" v-if="now_view == 'main'">
-        <p>コイン数：{{ gacha_setting.value}}</p>
+        <p>コイン数：{{ now_point }}</p>
         <div class="card gacha-card">
             <h3>{{ gacha_setting[0].gacha_name }}</h3>
             <img src="../assets/ticket_platinum.png">
@@ -13,6 +13,19 @@
                 </div>
             </div>
         </div>
+        <br>
+        <br>
+        <div class="card gacha-card">
+            <h3>{{ gacha_setting[0].gacha_name }}</h3>
+            <img src="../assets/ticket_platinum.png">
+            <div class="btn-toolbar gacha-play-btn-place">
+                <div class="btn-group">
+                    <button class="btn btn-outline-dark gacha-play-btn" @click="playGacha('gold',1)">1回 {{ gacha_setting[0].spend_coins }}コイン</button>
+                    <button class="btn btn-outline-dark gacha-play-btn" @click="playGacha('gold',6)">6回 {{ gacha_setting[0].spend_coins*5 }}コイン</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <!-- ガチャ演出画面 -->
@@ -27,7 +40,7 @@
     <!-- ガチャ結果 -->
     <div class="gacha-result" v-else-if="now_view == 'result'">
       <h3 class="get-prize-p-title">🎁 獲得 🎁</h3>
-      <div class="card">
+      <div class="card get-prize">
         <img :src="require('../assets/'+prize_img)" class="get-item-img">
         <p>{{ prize_name }}</p>
       </div>
@@ -81,7 +94,7 @@ export default {
 
         gacha_data.value = []
 
-        let data1 = await axios.get('https://sheets.googleapis.com/v4/spreadsheets/1GRckIW0juHtiFHNSok8es6oW_miOV_9TNdiw7gLWnwc/values/ガチャ景品(金)!A1:E100?key=AIzaSyBYGo-htizvE31sI-GGUkMRsK0nZ7i5Wmw')
+        let data1 = await axios.get('https://sheets.googleapis.com/v4/spreadsheets/1GRckIW0juHtiFHNSok8es6oW_miOV_9TNdiw7gLWnwc/values/premium!A1:E100?key=AIzaSyBYGo-htizvE31sI-GGUkMRsK0nZ7i5Wmw')
         comp_data1 = [{r:[],sr:[],ssr:[]}]
         gacha_setting.value.push(
             {
@@ -182,12 +195,24 @@ export default {
                             console.log("獲得品：",get_prize.value)
                             await item_list.push(get_prize.value)
                             localStorage.setItem('my_items',JSON.stringify(item_list))
-                            await supabase.from('app_setting').delete().eq('type', "got_item_list")
-                            await supabase.from('app_setting').insert({type:"got_item_list",contents: item_list});
+                            await supabase.from('got_items').insert(
+                                {
+                                    item_name: get_prize.value.name,
+                                    img: get_prize.value.img,
+                                    explain: get_prize.value.explain,
+                                    rare: get_prize.value.movie_type
+                                }
+                            );
                         }else{
                             localStorage.setItem('my_items',JSON.stringify([get_prize.value]))
-                            await supabase.from('app_setting').delete().eq('type', "got_item_list")
-                            await supabase.from('app_setting').insert({type:"got_item_list",contents: get_prize.value});
+                            await supabase.from('got_items').insert(
+                                {
+                                    item_name: get_prize.value.name,
+                                    img: get_prize.value.img,
+                                    explain: get_prize.value.explain,
+                                    rare: get_prize.value.movie_type
+                                }
+                            );
                         }
                         prize_name.value = gacha_data.value[0].ssr[random].name
                         prize_img.value = gacha_data.value[0].ssr[random].img
@@ -201,12 +226,24 @@ export default {
                             console.log(item_list)
                             await item_list.push(get_prize.value)
                             localStorage.setItem('my_items',JSON.stringify(item_list))
-                            await supabase.from('app_setting').delete().eq('type', "got_item_list")
-                            await supabase.from('app_setting').insert({type:"got_item_list",contents: item_list});
+                            await supabase.from('got_items').insert(
+                                {
+                                    item_name: get_prize.value.name,
+                                    img: get_prize.value.img,
+                                    explain: get_prize.value.explain,
+                                    rare: get_prize.value.movie_type
+                                }
+                            );
                         }else{
                             localStorage.setItem('my_items',JSON.stringify([get_prize.value]))
-                            await supabase.from('app_setting').delete().eq('type', "got_item_list")
-                            await supabase.from('app_setting').insert({type:"got_item_list",contents: get_prize.value});
+                            await supabase.from('got_items').insert(
+                                {
+                                    item_name: get_prize.value.name,
+                                    img: get_prize.value.img,
+                                    explain: get_prize.value.explain,
+                                    rare: get_prize.value.movie_type
+                                }
+                            );
                         }
                         prize_name.value = gacha_data.value[0].sr[random].name
                         prize_img.value = gacha_data.value[0].sr[random].img
@@ -218,14 +255,26 @@ export default {
                         if(localStorage.getItem('my_items') != null){
                             console.log("獲得品：",get_prize.value)
                             console.log(item_list)
-                            await item_list.push(get_prize.value)
+                            // await item_list.push(get_prize.value)
                             localStorage.setItem('my_items',JSON.stringify(item_list))
-                            await supabase.from('app_setting').delete().eq('type', "got_item_list")
-                            await supabase.from('app_setting').insert({type:"got_item_list",contents: item_list});
+                            await supabase.from('got_items').insert(
+                                {
+                                    item_name: get_prize.value.name,
+                                    img: get_prize.value.img,
+                                    explain: get_prize.value.explain,
+                                    rare: get_prize.value.movie_type
+                                }
+                            );
                         }else{
                             localStorage.setItem('my_items',JSON.stringify([get_prize.value]))
-                            await supabase.from('app_setting').delete().eq('type', "got_item_list")
-                            await supabase.from('app_setting').insert({type:"got_item_list",contents: get_prize.value});
+                            await supabase.from('got_items').insert(
+                                {
+                                    item_name: get_prize.value.name,
+                                    img: get_prize.value.img,
+                                    explain: get_prize.value.explain,
+                                    rare: get_prize.value.movie_type
+                                }
+                            );
                         }
                         prize_name.value = gacha_data.value[0].r[random].name
                         prize_img.value = gacha_data.value[0].r[random].img
@@ -320,6 +369,12 @@ export default {
 .gacha-play-btn-place{
     margin: 0 auto;
     padding: 10px 0;
+}
+
+.get-prize{
+    max-width: 80%;
+    margin: 0 auto;
+    max-height: 60%;
 }
 
 </style>

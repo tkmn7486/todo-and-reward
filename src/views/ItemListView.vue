@@ -1,7 +1,7 @@
 <template>
   <div class="item_list">
     <!-- 現在の所持品 -->
-    <div class="now-in-possession card sub-card" v-if="now_view == 'hold_items'">
+    <div class="now-in-possession sub-card" v-if="now_view == 'hold_items'">
       <h4 class="page-title">所持品</h4>
       <table class="table">
         <thead>
@@ -12,7 +12,7 @@
         <tbody>
           <tr v-for="item,index in item_list" :key="item.id">
             <td>
-              <div :class="'card '+item.movie_type">
+              <div :class="'item-card '+item.rare" @click="openItemDetail(item,index)">
                 <table>
                   <tr>
                     <td class="table-icon-place">
@@ -21,8 +21,8 @@
                       </div>
                     </td>
                     <td class="table-item-name-place">
-                      <div class="table-item-name-frame" @click="openItemDetail(item,index)">
-                        {{ item.name }}
+                      <div class="table-item-name-frame">
+                        {{ item.item_name }}
                       </div>
                     </td>
                   </tr>
@@ -40,7 +40,7 @@
 
     <!-- アイテム詳細 -->
     <div class="item-detail" v-else-if="now_view == 'detail'">
-      <div :class="'card sub-card item-detail-card '+selected_item[0].rare">
+      <div :class="'sub-card item-detail-card '+selected_item[0].rare">
         <div class="item-detail-card-img">
           <div class="large-item-icon-frame">
             <img :src="require('../assets/'+selected_item[0].img)" class="card-img-top">
@@ -50,7 +50,7 @@
           <h5 class="card-title">{{ selected_item[0].name }}</h5>
           <p class="card-text">{{ selected_item[0].explain }}</p>
           <br>
-          <button class="btn btn-outline-dark">使用する</button>
+          <button class="btn btn-outline-dark" @click="useItem()">使用する</button>
         </div>
 
       </div>
@@ -61,9 +61,12 @@
 <script>
 import {ref,onMounted} from 'vue'
 import {supabase} from '../supabase'
+import { useRouter } from 'vue-router'
 export default {
   name: 'HomeView',
   setup(){
+    const router = useRouter()
+
     let now_view = ref('hold_items')
     let item_list = ref([])
 
@@ -75,37 +78,56 @@ export default {
       selected_item.value = []
       selected_item.value.push(
         {
+          item_id: item.id,
           index:index,
-          name:item.name,
+          name:item.item_name,
           img: item.img,
           explain:item.explain,
-          rare:item.movie_type,
+          rare:item.rare,
         }
       )
+      console.log('selected:', selected_item.value[0])
+      console.log('id:', selected_item.value[0].item_id)
       now_view.value = 'detail'
+    }
+
+    const useItem=async()=>{
+      let choice = confirm('アイテムを使用します。\nよろしいですか？')
+      if(choice==true){
+        await supabase
+        .from('got_items')
+        .delete()
+        .eq('id', Number(selected_item.value[0].item_id))
+      }
+      forceReload()
+    }
+
+    const forceReload=async()=>{
+      router.go({path: router.currentRoute.path, force: true})
     }
 
     onMounted(async()=>{
       let {
         data: item
-      } = await supabase.from('app_setting').select('type,contents');
+      } = await supabase.from('got_items').select('id,item_name,img,explain,rare');
 
-      console.log('取得データ：', item[0])
+      console.log('取得データ：', item)
 
-      if(item[0].type == 'got_item_list'){
-        item_list.value = JSON.parse(item[0].contents)
+      if(item.length >= 1){
+        item_list.value = item
         console.log('got_item_list:', item_list.value)
       }else{
-        item_list.value = JSON.parse(item[1].contents)
+        item_list.value = []
         console.log('got_item_list:', item_list.value)
       }
-      localStorage.setItem('my_items',JSON.stringify(item_list.value))
     })
     return{
       now_view,
       item_list,
       selected_item,
-      openItemDetail
+      openItemDetail,
+      useItem,
+      forceReload
     }
   }
 }
@@ -150,6 +172,15 @@ export default {
 .sub-card{
   width: 95%;
   margin: 0 auto;
+  border:none;
+  border-radius: 5px;
+  padding: 20px 0;
+}
+
+.item-card{
+  border:none;
+  border-radius: 5px;
+  text-align: center;
 }
 
 .table-icon-place{

@@ -9,7 +9,6 @@
         </tr>
       </table>
     </div>
-    <p class="card hold-point-display">所持：{{ now_point }} 🪙</p>
   </nav>
   <div class="reload-btn">
     <button class="btn btn-sm" @click="forceReload()">🔄</button>
@@ -18,7 +17,7 @@
 </template>
 
 <script>
-import {ref, onMounted} from 'vue'
+import {ref} from 'vue'
 import { useRouter } from 'vue-router'
 import {supabase} from './supabase'
 
@@ -28,11 +27,6 @@ export default {
     const router = useRouter()
 
     let now_point = ref(0)
-
-    const getNowPoint=()=>{
-      now_point.value = localStorage.getItem('now_point')
-      console.log('ゲンポイント：',now_point.value)
-    }
 
     const forceReload=async()=>{
       let {
@@ -52,19 +46,8 @@ export default {
       }
       router.go({path: router.currentRoute.path, force: true})
     }
-
-    onMounted(()=>{
-      let point = localStorage.getItem('now_point')
-      if(point == null){
-        now_point.value = 0
-        localStorage.setItem('now_point', 0)
-      }else{
-        setInterval(getNowPoint,2000)
-      }
-    })
     return{
       now_point,
-      getNowPoint,
       forceReload
     }
   }
@@ -81,8 +64,22 @@ export default {
   color: #2c3e50;
 }
 
+.card{
+  z-index: -1;
+}
+
 #router-view{
-  margin-top: 20px;
+  margin-top: 50px;
+  z-index: -1;
+}
+
+.nav-menu{
+  position: fixed;
+  top:0;
+  left:0;
+  width: 100vw;
+  background-color: black;
+  z-index:100px;
 }
 
 .reload-btn{
@@ -93,7 +90,6 @@ export default {
 
 nav {
   padding: 5px;
-  background-color: black;
 }
 
 nav img {
