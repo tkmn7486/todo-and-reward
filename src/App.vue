@@ -56,21 +56,27 @@ export default {
 </script>
 
 <style>
+@font-face {
+    font-family: 'dot-style-10';
+    src: url('../src/assets/fonts/PixelMplus10-Regular.ttf') format('truetype');
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing: 'dot-style-10';
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  font-family:'dot-style-10';
 }
 
 .card{
-  z-index: -1;
+  z-index: 0;
 }
 
 #router-view{
   margin-top: 50px;
   z-index: -1;
+  background-color:none;
 }
 
 .nav-menu{
@@ -79,7 +85,7 @@ export default {
   left:0;
   width: 100vw;
   background-color: black;
-  z-index:100px;
+  z-index:100;
 }
 
 .reload-btn{
@@ -113,7 +119,6 @@ nav a.router-link-exact-active {
 }
 
 .hold-point-display{
-  background-color: white;
   margin-top: 10px;
 }
 </style>

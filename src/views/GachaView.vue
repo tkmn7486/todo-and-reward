@@ -3,31 +3,18 @@
     <!-- ガチャ一覧 -->
     <div class="gacha-home" v-if="now_view == 'main'">
         <p>コイン数：{{ now_point }}</p>
-        <div class="gacha-card">
+        <div class="gacha-card nes-balloon">
             <h3>{{ gacha_setting[0].gacha_name }}</h3>
             <div class="gacha-img-place">
                 <img src="../assets/gacha.png">
             </div>
             <div class="btn-toolbar gacha-play-btn-place">
-                <div class="btn-group">
-                    <button class="btn btn-outline-dark gacha-play-btn" @click="playGacha('premium',1)">1回 {{ gacha_setting[0].spend_coins }}コイン</button>
-                    <button class="btn btn-outline-dark gacha-play-btn" @click="playGacha('premium',6)">6回 {{ gacha_setting[0].spend_coins*5 }}コイン</button>
+                <div class="btn-g">
+                    <button class="nes-btn gacha-play-btn" @click="playGacha('premium',1)">1回 {{ gacha_setting[0].spend_coins }}コイン</button>
+                    <button class="nes-btn gacha-play-btn" @click="playGacha('premium',6)">6回 {{ gacha_setting[0].spend_coins*5 }}コイン</button>
                 </div>
             </div>
         </div>
-        <br>
-        <br>
-        <div class="gacha-card">
-            <h3>{{ gacha_setting[0].gacha_name }}</h3>
-            <img src="../assets/ticket_platinum.png">
-            <div class="btn-toolbar gacha-play-btn-place">
-                <div class="btn-group">
-                    <button class="btn btn-outline-dark gacha-play-btn" @click="playGacha('gold',1)">1回 {{ gacha_setting[0].spend_coins }}コイン</button>
-                    <button class="btn btn-outline-dark gacha-play-btn" @click="playGacha('gold',6)">6回 {{ gacha_setting[0].spend_coins*5 }}コイン</button>
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <!-- ガチャ演出画面 -->
@@ -36,17 +23,19 @@
       <video :class="now_video_view" muted playsinline preload="auto" id="gacha_video" @ended="videoEnded">
         <source :src="require('../assets/movie/'+movie_name+'.mp4')" type='video/mp4'>
       </video>
-      <!-- <img :src="gp_perform" class="gacha-img"> -->
     </div>
 
     <!-- ガチャ結果 -->
     <div class="gacha-result" v-else-if="now_view == 'result'">
       <h3 class="get-prize-p-title">🎁 獲得 🎁</h3>
-      <div class="card get-prize">
-        <img :src="require('../assets/'+prize_img)" class="get-item-img">
-        <p>{{ prize_name }}</p>
+      <div class="get-prize">
+        <div class="nes-balloon get-item-img-place">
+            <img :src="require('../assets/item/'+prize_img)" class="get-item-img">
+        </div>
+        <p>【{{ prize_name }}】</p>
       </div>
-      <button class="btn btn-outline-dark" @click="now_view = 'main'">戻る</button>
+      <br>
+      <button class="nes-btn" @click="now_view = 'main'">戻る</button>
     </div> 
 
     <div class="loading-view" v-else-if="now_view == 'loading'">
@@ -72,7 +61,7 @@ export default {
   name: 'HomeView',
   setup(){
     let now_view = ref('loading')
-    let gp_perform = ref('../assets/gacha_performance.gif')
+
     let gacha_data = ref([])
     let get_prize = ref('')
     let gacha_setting = ref([])
@@ -320,7 +309,6 @@ export default {
     })
     return{
       now_view,
-      gp_perform,
       gacha_data,
       get_prize,
       gacha_setting,
@@ -367,18 +355,13 @@ export default {
     font-weight: bold;
 }
 
-.gacha-card{
-    width: 90%;
-    margin:0 auto;
-}
-
 .gacha-play-btn-place{
     margin: 0 auto;
-    padding: 10px 0;
+    padding: 10px 10px;
 }
 
-.btn-group{
-    margin:0 auto;
+.gacha-play-btn{
+    margin: 10px;
 }
 
 .get-prize{
@@ -387,14 +370,17 @@ export default {
     max-height: 60%;
 }
 
+.get-item-img{
+    width: 80%;
+    min-width: 200px;
+}
+
 .btn{
     z-index: 10;
 }
 
 .gacha-card{
     width: 80%;
-    border:double 3px rgb(147, 147, 147);
-    border-radius:10px;
 }
 
 .gacha-card img{
@@ -404,5 +390,7 @@ export default {
 .gacha-card button{
     margin:0 auto;
 }
-
+.get-item-img-place{
+    background-color: rgb(88, 88, 88);
+}
 </style>

@@ -12,12 +12,12 @@
         <tbody>
           <tr v-for="item,index in item_list" :key="item.id">
             <td>
-              <div :class="'item-card '+item.rare" @click="openItemDetail(item,index)">
+              <div :class="'nes-balloon item-list-item '+item.rare" @click="openItemDetail(item,index)">
                 <table>
                   <tr>
                     <td class="table-icon-place">
                       <div class="table-item-icon-frame">
-                        <img :src= "require('../assets/'+item.img)" class="table-item-icon">
+                        <img :src= "require('../assets/item/'+item.img)" class="table-item-icon">
                       </div>
                     </td>
                     <td class="table-item-name-place">
@@ -43,7 +43,7 @@
       <div :class="'sub-card item-detail-card '+selected_item[0].rare">
         <div class="item-detail-card-img">
           <div class="large-item-icon-frame">
-            <img :src="require('../assets/'+selected_item[0].img)" class="card-img-top">
+            <img :src="require('../assets/item/'+selected_item[0].img)" class="card-img-top">
           </div>
         </div>
         <div class="card-body">
@@ -227,4 +227,12 @@ export default {
   }
 }
 
+.item-list-item{
+  width: 90%;
+}
+
+.nes-balloon{
+  padding:0;
+  z-index:0;
+}
 </style>

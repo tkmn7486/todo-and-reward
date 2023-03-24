@@ -8,7 +8,7 @@
             <td class="type-icon-place"><img :src="require('../assets/'+todo.type+'.png')"></td>
             <td>{{ todo.name }}</td>
             <td>
-              <button class="btn btn-outline-dark" @click="getAchieve(todo.point)">獲得</button>
+              <button class="nes-btn" @click="getAchieve(todo.point)">獲得</button>
             </td>
           </tr>
         </tbody>
