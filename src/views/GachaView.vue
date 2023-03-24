@@ -293,9 +293,9 @@ export default {
     }
 
     const getGachaVideo=async()=>{
-        // while(document.getElementById('gacha_video')==null){
-        //     console.log('動画読み込み待機中...')
-        // }
+        while(document.getElementById('gacha_video')==null){
+            console.log('動画読み込み待機中...')
+        }
         video_status.value = document.getElementById('gacha_video')
         console.log('video要素:', video_status.value)
         video_duration.value = video_status.value.duration
@@ -349,6 +349,10 @@ export default {
 
 #gacha_video{
     width: 100%;
+    position:fixed;
+    top:0;
+    left:0;
+    width: 100vw;
 }
 
 .gacha-video-inv{
