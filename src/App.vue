@@ -14,6 +14,7 @@
     <button class="btn btn-sm" @click="forceReload()">🔄</button>
   </div>
   <router-view id="router-view" />
+  <p class=""></p>
 </template>
 
 <script>
@@ -55,7 +56,7 @@ export default {
 
 </script>
 
-<style>
+<style lang="scss">
 @font-face {
     font-family: 'dot-style-10';
     src: url('../src/assets/fonts/PixelMplus10-Regular.ttf') format('truetype');
@@ -120,5 +121,347 @@ nav a.router-link-exact-active {
 
 .hold-point-display{
   margin-top: 10px;
+}
+
+.typewriter1{
+  overflow: hidden; /*はみ出た要素を非表示に*/
+  white-space: nowrap; /*1行に*/
+  animation: typing1 0.3s steps(1, end) forwards;
+/*animation: アニメーション名｜時間｜分割数｜ループ */
+}
+
+.typewriter2{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing2 0.3s steps(2, end) forwards;
+}
+
+.typewriter3{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing3 0.3s steps(3, end) forwards;
+}
+
+.typewriter4{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing4 0.3s steps(4, end) forwards;
+}
+
+.typewriter5{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing5 0.3s steps(5, end) forwards;
+}
+
+.typewriter6{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing6 0.3s steps(6, end) forwards;
+}
+
+.typewriter7{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing7 0.3s steps(7, end) forwards;
+}
+
+.typewriter8{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing8 0.3s steps(8, end) forwards;
+}
+
+.typewriter9{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing9 0.3s steps(9, end) forwards;
+}
+
+.typewriter10{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing10 0.3s steps(10, end) forwards;
+}
+
+.typewriter11{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing11 0.3s steps(11, end) forwards;
+}
+
+.typewriter12{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing12 0.3s steps(12, end) forwards;
+}
+
+.typewriter13{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing13 0.3s steps(13, end) forwards;
+}
+
+.typewriter14{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing14 0.3s steps(14, end) forwards;
+}
+
+.typewriter15{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing15 0.3s steps(15, end) forwards;
+}
+
+.typewriter16{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing16 0.3s steps(16, end) forwards;
+}
+
+.typewriter17{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing17 0.3s steps(17, end) forwards;
+}
+
+.typewriter18{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing18 0.3s steps(18, end) forwards;
+}
+
+.typewriter19{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing19 0.3s steps(19, end) forwards;
+}
+
+.typewriter20{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing20 0.3s steps(20, end) forwards;
+}
+
+.typewriter21{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing21 0.3s steps(21, end) forwards;
+}
+
+.typewriter22{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing22 0.3s steps(22, end) forwards;
+}
+
+.typewriter23{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing23 0.3s steps(23, end) forwards;
+}
+
+.typewriter24{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing24 0.3s steps(24, end) forwards;
+}
+
+.typewriter25{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing25 0.3s steps(25, end) forwards;
+}
+
+.typewriter26{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing26 0.3s steps(26, end) forwards;
+}
+
+.typewriter27{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing27 0.3s steps(27, end) forwards;
+}
+
+.typewriter28{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing28 0.3s steps(28, end) forwards;
+}
+
+.typewriter29{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing29 0.3s steps(29, end) forwards;
+}
+
+.typewriter30{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing30 0.3s steps(30, end) forwards;
+}
+
+.typewriter-btn{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typingBtn 0.3s steps(3, end) forwards;
+}
+
+@keyframes typing1{
+  0% { width: 0%; }
+  100% { width: 1em; }
+}
+
+@keyframes typing2{
+  0% { width: 0%; }
+  100% { width: 2em; }
+}
+
+@keyframes typing3{
+  0% { width: 0%; }
+  100% { width: 3em; }
+}
+
+@keyframes typing4{
+  0% { width: 0%; }
+  100% { width: 4em; }
+}
+
+@keyframes typing5{
+  0% { width: 0%; }
+  100% { width: 5em; }
+}
+
+@keyframes typing6{
+  0% { width: 0%; }
+  100% { width: 6em; }
+}
+
+@keyframes typing7{
+  0% { width: 0%; }
+  100% { width: 7em; }
+}
+
+@keyframes typing8{
+  0% { width: 0%; }
+  100% { width: 8em; }
+}
+
+@keyframes typing9{
+  0% { width: 0%; }
+  100% { width: 9em; }
+}
+
+@keyframes typing10{
+  0% { width: 0%; }
+  100% { width: 10em; }
+}
+
+@keyframes typing11{
+  0% { width: 0%; }
+  100% { width: 11em; }
+}
+
+@keyframes typing12{
+  0% { width: 0%; }
+  100% { width: 12em; }
+}
+
+@keyframes typing13{
+  0% { width: 0%; }
+  100% { width: 13em; }
+}
+
+@keyframes typing14{
+  0% { width: 0%; }
+  100% { width: 14em; }
+}
+
+@keyframes typing15{
+  0% { width: 0%; }
+  100% { width: 15em; }
+}
+
+@keyframes typing16{
+  0% { width: 0%; }
+  100% { width: 16em; }
+}
+
+@keyframes typing17{
+  0% { width: 0%; }
+  100% { width: 17em; }
+}
+
+@keyframes typing18{
+  0% { width: 0%; }
+  100% { width: 18em; }
+}
+
+@keyframes typing19{
+  0% { width: 0%; }
+  100% { width: 19em; }
+}
+
+@keyframes typing20{
+  0% { width: 0%; }
+  100% { width: 20em; }
+}
+
+@keyframes typing21{
+  0% { width: 0%; }
+  100% { width: 21em; }
+}
+
+@keyframes typing22{
+  0% { width: 0%; }
+  100% { width: 22em; }
+}
+
+@keyframes typing23{
+  0% { width: 0%; }
+  100% { width: 23em; }
+}
+
+@keyframes typing24{
+  0% { width: 0%; }
+  100% { width: 24em; }
+}
+
+@keyframes typing25{
+  0% { width: 0%; }
+  100% { width: 25em; }
+}
+
+@keyframes typing26{
+  0% { width: 0%; }
+  100% { width: 26em; }
+}
+
+@keyframes typing27{
+  0% { width: 0%; }
+  100% { width: 27em; }
+}
+
+@keyframes typing28{
+  0% { width: 0%; }
+  100% { width: 28em; }
+}
+
+@keyframes typing29{
+  0% { width: 0%; }
+  100% { width: 29em; }
+}
+
+@keyframes typing30{
+  0% { width: 0%; }
+  100% { width: 30em; }
+}
+
+@keyframes typingBtn{
+  0% { width: 0%; }
+  100% { width: 4em; }
 }
 </style>

@@ -5,10 +5,15 @@
       <table class="table">
         <tbody>
           <tr v-for="todo in todo_list" :key="todo.id">
-            <td class="type-icon-place"><img :src="require('../assets/'+todo.type+'.png')"></td>
-            <td>{{ todo.name }}</td>
+            <!-- <td class="type-icon-place"><img :src="require('../assets/'+todo.type+'.png')"></td> -->
             <td>
-              <button class="nes-btn" @click="getAchieve(todo.point)">獲得</button>
+              <p class="nes-balloon">{{ todo.type }}</p>
+            </td>
+            <td>
+              <p :class="'typewriter'+String(todo.name.length)">{{ todo.name }}</p>
+            </td>
+            <td class="todo-name-td">
+              <button class="nes-btn typewriter-btn" @click="getAchieve(todo.point)">獲得</button>
             </td>
           </tr>
         </tbody>
@@ -157,4 +162,16 @@ export default {
   width:50px;
 }
 
+.todo-name-td{
+  text-align: left;
+}
+
+.todo-name-td p{
+  text-align: center;
+}
+
+
+table .nes-balloon{
+  padding:0;
+}
 </style>

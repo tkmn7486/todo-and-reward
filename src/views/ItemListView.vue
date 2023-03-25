@@ -2,7 +2,9 @@
   <div class="item_list">
     <!-- 現在の所持品 -->
     <div class="now-in-possession sub-card" v-if="now_view == 'hold_items'">
-      <h4 class="page-title">所持品</h4>
+      <div class="page-title">
+        <h4 class="typewriter3">所持品</h4>
+      </div>
       <table class="table">
         <thead>
           <tr>
@@ -21,7 +23,7 @@
                       </div>
                     </td>
                     <td class="table-item-name-place">
-                      <div class="table-item-name-frame">
+                      <div :class="'table-item-name-frame typewriter'+String(item.item_name.length)">
                         {{ item.item_name }}
                       </div>
                     </td>
@@ -47,8 +49,8 @@
           </div>
         </div>
         <div class="card-body">
-          <h5 class="card-title">{{ selected_item[0].name }}</h5>
-          <p class="card-text">{{ selected_item[0].explain }}</p>
+          <h5 :class="'card-title typewriter'+String(selected_item[0].name.length)">{{ selected_item[0].name }}</h5>
+          <p :class="'card-text typewriter'+String(selected_item[0].explain.length)">{{ selected_item[0].explain }}</p>
           <br>
           <button class="btn btn-outline-dark" @click="useItem()">使用する</button>
         </div>
@@ -133,10 +135,16 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .page-title{
-  margin-top: 20px;
+  width: 100vw;
+  margin: 0 auto;
+  text-align: center;
   font-weight: bold;
+}
+
+.page-title h4{
+  margin: 0 auto;
 }
 
 .table-icon-place{
