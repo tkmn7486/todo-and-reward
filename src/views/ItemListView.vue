@@ -42,15 +42,19 @@
 
     <!-- アイテム詳細 -->
     <div class="item-detail" v-else-if="now_view == 'detail'">
-      <div :class="'sub-card item-detail-card '+selected_item[0].rare">
+      <div :class="'sub-card nes-balloon item-detail-card '+selected_item[0].rare">
         <div class="item-detail-card-img">
           <div class="large-item-icon-frame">
             <img :src="require('../assets/item/'+selected_item[0].img)" class="card-img-top">
           </div>
         </div>
         <div class="card-body">
-          <h5 :class="'card-title typewriter'+String(selected_item[0].name.length)">{{ selected_item[0].name }}</h5>
-          <p :class="'card-text typewriter'+String(selected_item[0].explain.length)">{{ selected_item[0].explain }}</p>
+          <div class="item-title">
+            <h5 :class="'card-title typewriter'+String(selected_item[0].name.length)">{{ selected_item[0].name }}</h5>
+          </div>
+          <div class="item-comment">
+            <p :class="'card-text typewriter'+String(selected_item[0].explain.length)">{{ selected_item[0].explain }}</p>
+          </div>
           <br>
           <button class="btn btn-outline-dark" @click="useItem()">使用する</button>
         </div>
@@ -180,8 +184,6 @@ export default {
 .sub-card{
   width: 95%;
   margin: 0 auto;
-  border:none;
-  border-radius: 5px;
   padding: 20px 0;
 }
 
@@ -242,5 +244,19 @@ export default {
 .nes-balloon{
   padding:0;
   z-index:0;
+}
+
+.item-title{
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+}
+
+.card-title{
+  margin: 0 auto;
+}
+
+.item-comment{
+  padding: 20px;
 }
 </style>

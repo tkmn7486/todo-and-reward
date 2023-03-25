@@ -2,18 +2,48 @@
   <div id="app">
     <!-- ガチャ一覧 -->
     <div class="gacha-home" v-if="now_view == 'main'">
-        <p>コイン数：{{ now_point }}</p>
-        <div class="gacha-card nes-balloon">
-            <h3>{{ gacha_setting[0].gacha_name }}</h3>
-            <div class="gacha-img-place">
-                <img src="../assets/gacha.png">
-            </div>
-            <div class="btn-toolbar gacha-play-btn-place">
-                <div class="btn-g">
-                    <button class="nes-btn gacha-play-btn" @click="playGacha('premium',1)">1回 {{ gacha_setting[0].spend_coins }}コイン</button>
-                    <button class="nes-btn gacha-play-btn" @click="playGacha('premium',6)">6回 {{ gacha_setting[0].spend_coins*5 }}コイン</button>
+        <div class="point-view">
+            <img src="../assets/coin.png" class="point-img">
+            <label><h5>{{ now_point }}</h5></label>
+        </div>
+        <div class="carousel-view nes-balloon">
+        <carousel :items-to-show="1">
+          <slide v-for="g in gacha_setting" :key="g.id">
+            <!-- <div class="gacha-card nes-balloon">
+                <div class="gacha-name">
+                    <h3 :class="'typewriter'+String(gacha_setting[0].gacha_name.length)">{{ gacha_setting[0].gacha_name }}</h3>
+                </div>
+                <div class="gacha-img-place">
+                    <img class="gacha-img" src="../assets/gacha.png">
+                </div>
+                <div class="btn-toolbar gacha-play-btn-place">
+                    <div class="btn-g">
+                        <button class="nes-btn gacha-play-btn" @click="playGacha('premium',1)">1回 {{ gacha_setting[0].spend_coins }}コイン</button>
+                        <button class="nes-btn gacha-play-btn" @click="playGacha('premium',6)">6回 {{ gacha_setting[0].spend_coins*5 }}コイン</button>
+                    </div>
+                </div>
+            </div> -->
+            <div class="gacha-card">
+                <div class="gacha-name">
+                    <h3 :class="'typewriter'+String(g.gacha_name.length)">{{ g.gacha_name }}</h3>
+                </div>
+                <div class="gacha-img-place">
+                    <img class="gacha-img" src="../assets/gacha.png">
+                </div>
+                <div class="btn-toolbar gacha-play-btn-place">
+                    <div class="btn-g">
+                        <button class="nes-btn gacha-play-btn" @click="playGacha('premium',1)">1回 {{ gacha_setting[0].spend_coins }}コイン</button>
+                        <button class="nes-btn gacha-play-btn" @click="playGacha('premium',6)">6回 {{ gacha_setting[0].spend_coins*5}}コイン</button>
+                    </div>
                 </div>
             </div>
+          </slide>
+
+          <template #addons>
+            <navigation />
+            <pagination />
+          </template>
+        </carousel>
         </div>
     </div>
 
@@ -56,11 +86,25 @@
 import {ref,onMounted} from 'vue'
 import axios from 'axios'
 import {supabase} from '../supabase'
+import 'vue3-carousel/dist/carousel.css';
+import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
 
 export default {
   name: 'HomeView',
+  components:{
+    Carousel,
+    Slide,
+    Pagination,
+    Navigation,
+  },
   setup(){
     let now_view = ref('loading')
+
+    let gacha= ref(
+        [
+            {name:"プレミアムガチャ",img:"../assets/gacha.png"}
+        ]
+    )
 
     let gacha_data = ref([])
     let get_prize = ref('')
@@ -308,6 +352,7 @@ export default {
         now_point.value = Number(localStorage.getItem('now_point'))
     })
     return{
+      gacha,
       now_view,
       gacha_data,
       get_prize,
@@ -332,7 +377,12 @@ export default {
 
 <style>
 .gacha-img{
-  width: 30
+    width: 300px;
+}
+
+.gacha-img-place{
+    width: 80%;
+    margin: 0 auto;
 }
 
 #gacha_video{
@@ -392,5 +442,26 @@ export default {
 }
 .get-item-img-place{
     background-color: rgb(88, 88, 88);
+}
+
+.gacha-name{
+    margin: 0 auto;
+}
+
+.gacha-name h3{
+    margin: 0 auto;
+}
+
+.point-img{
+    display: inline-block;
+    width: 40px;
+}
+
+.point-view label{
+    vertical-align: -3px;
+}
+
+.btn-g{
+    margin: 0 auto;
 }
 </style>

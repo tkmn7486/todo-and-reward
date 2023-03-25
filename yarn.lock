@@ -7400,6 +7400,11 @@ vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.npmmirror.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
 
+vue3-carousel@^0.2.14:
+  version "0.2.14"
+  resolved "https://registry.yarnpkg.com/vue3-carousel/-/vue3-carousel-0.2.14.tgz#8b7e6b84de9784c3f49b176515a2ff0fe4d5ed3a"
+  integrity sha512-QLFdD0rOe9vZwlbNwTt0DkC8wjhYnAt4Okxed4tfYRlbegjGFQqu1u9jwwrcBLIaWwE3xTrFREFfSfVoOAvqlw==
+
 vue@^3.2.13:
   version "3.2.47"
   resolved "https://registry.npmmirror.com/vue/-/vue-3.2.47.tgz#3eb736cbc606fc87038dbba6a154707c8a34cff0"
