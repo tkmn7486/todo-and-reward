@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <!-- todoリスト -->
-    <div class="todo-list card" v-if="now_view == 'main'">
+    <div class="todo-list" v-if="now_view == 'main'">
       <table class="table">
         <tbody>
           <tr v-for="todo in todo_list" :key="todo.id">

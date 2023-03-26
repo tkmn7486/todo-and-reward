@@ -423,6 +423,7 @@ export default {
 .get-item-img{
     width: 80%;
     min-width: 200px;
+    filter: drop-shadow(0px 0px 3px #fdfdfd);
 }
 
 .btn{
@@ -441,7 +442,8 @@ export default {
     margin:0 auto;
 }
 .get-item-img-place{
-    background-color: rgb(88, 88, 88);
+    background-color: rgb(0, 0, 0);
+    filter:drop-shadow(0px 0px 1px #fdfdfd);
 }
 
 .gacha-name{

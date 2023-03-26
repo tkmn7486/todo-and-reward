@@ -5,12 +5,7 @@
       <div class="page-title">
         <h4 class="typewriter3">所持品</h4>
       </div>
-      <table class="table">
-        <thead>
-          <tr>
-            <th></th>
-          </tr>
-        </thead>
+      <table class="item-list-table">
         <tbody>
           <tr v-for="item,index in item_list" :key="item.id">
             <td>
@@ -238,7 +233,7 @@ export default {
 }
 
 .item-list-item{
-  width: 90%;
+  width: 70vw;
 }
 
 .nes-balloon{
@@ -258,5 +253,9 @@ export default {
 
 .item-comment{
   padding: 20px;
+}
+
+.item-list-table{
+  margin: 0 auto;
 }
 </style>
