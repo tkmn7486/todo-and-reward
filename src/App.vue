@@ -28,9 +28,9 @@
       </table>
     </div>
   </nav>
-  <div class="reload-btn">
+  <!-- <div class="reload-btn">
     <button class="btn btn-sm" @click="forceReload()">🔄</button>
-  </div>
+  </div> -->
   <router-view id="router-view" />
   <p class=""></p>
 </template>
