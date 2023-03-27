@@ -3,9 +3,27 @@
     <div class="nav-menu">
       <table class="nav-table">
         <tr>
-          <td><router-link to="/"><img src="./assets/nav_icon/task.svg" class="nav-icon"></router-link></td>
-          <td><router-link to="/gacha"><img src="./assets/nav_icon/gacha.svg" class="nav-icon"></router-link></td>
-          <td><router-link to="/item_list"><img src="./assets/nav_icon/item.svg" class="nav-icon"></router-link></td>
+          <td>
+            <router-link to="/">
+              <img src="./assets/nav_icon/task.png" class="nav-icon">
+              <p>タスク</p>
+              <small>▲</small>
+            </router-link>
+          </td>
+          <td>
+            <router-link to="/gacha">
+              <img src="./assets/nav_icon/gacha.png" class="nav-icon">
+              <p>宝箱</p>
+              <small>▲</small>
+            </router-link>
+          </td>
+          <td>
+            <router-link to="/item_list">
+              <img src="./assets/nav_icon/item.png" class="nav-icon">
+              <p>もちもの</p>
+              <small>▲</small>
+            </router-link>
+          </td>
         </tr>
       </table>
     </div>
@@ -82,7 +100,7 @@ export default {
 
 .nav-menu{
   position: fixed;
-  top:0;
+  bottom:0;
   left:0;
   width: 100vw;
   background-color: black;
@@ -99,12 +117,24 @@ nav {
   padding: 5px;
 }
 
-nav img {
-  filter: invert(50%) sepia(0%) saturate(11%) hue-rotate(143deg) brightness(101%) contrast(93%);
+nav a{
+  text-decoration: none;
+  color: white;
+  small{
+    color: black;
+  }
+  p{
+    margin:0;
+  }
 }
 
 nav a.router-link-exact-active {
-  filter: invert(72%) sepia(26%) saturate(6428%) hue-rotate(1deg) brightness(105%) contrast(102%);
+    filter: invert(-50%) sepia(0%) saturate(-11%) hue-rotate(-143deg) brightness(101%) contrast(-93%);
+    color: white;
+    text-decoration: none;
+    small{
+      color: white;
+    }
 }
 
 .nav-table{

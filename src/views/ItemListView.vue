@@ -1,10 +1,35 @@
 <template>
-  <div class="item_list">
+  <div class="item-list">
     <!-- 現在の所持品 -->
     <div class="now-in-possession sub-card" v-if="now_view == 'hold_items'">
       <div class="page-title">
         <h4 class="typewriter3">所持品</h4>
       </div>
+
+      <div class="search-box">
+        <table class="search-table">
+          <tr>
+            <th>レアリティ</th>
+            <th>種別</th>
+          </tr>
+          <tr>
+            <td>
+              <select v-model="search_rare" @change="searchItem()">
+                <option value="">すべて</option>
+                <option value="r">R</option>
+                <option value="sr">SR</option>
+                <option value="ssr">SSR</option>
+              </select>
+            </td>
+            <td>
+              <select>
+                <option value="">すべて</option>
+              </select>
+            </td>
+          </tr>
+        </table>
+      </div>
+
       <table class="item-list-table">
         <tbody>
           <tr v-for="item,index in item_list" :key="item.id">
@@ -52,6 +77,7 @@
           </div>
           <br>
           <button class="btn btn-outline-dark" @click="useItem()">使用する</button>
+          <button class="btn btn-outline-dark" @click="closeDetail()">戻る</button>
         </div>
 
       </div>
@@ -69,9 +95,23 @@ export default {
     const router = useRouter()
 
     let now_view = ref('hold_items')
+
+    let origin_list = ref([])
     let item_list = ref([])
 
     let selected_item = ref([])
+
+    let search_rare = ref("")
+
+    const searchItem=()=>{
+      if(search_rare.value == ""){
+        item_list.value = origin_list.value
+      }else{
+        item_list.value = origin_list.value.filter(item_data => {
+          return item_data.rare == search_rare.value
+        })
+      }
+    }
 
     const openItemDetail=(item,index)=>{
       console.log('item:',item)
@@ -90,6 +130,10 @@ export default {
       console.log('selected:', selected_item.value[0])
       console.log('id:', selected_item.value[0].item_id)
       now_view.value = 'detail'
+    }
+
+    const closeDetail=()=>{
+      now_view.value = "hold_items"
     }
 
     const useItem=async()=>{
@@ -116,27 +160,37 @@ export default {
 
       if(item.length >= 1){
         item_list.value = item
+        origin_list.value = item
         console.log('got_item_list:', item_list.value)
       }else{
         item_list.value = []
+        origin_list.value = []
         console.log('got_item_list:', item_list.value)
       }
     })
     return{
       now_view,
+      origin_list,
       item_list,
       selected_item,
+      search_rare,
       openItemDetail,
       useItem,
-      forceReload
+      forceReload,
+      searchItem,
+      closeDetail
     }
   }
 }
 </script>
 
 <style lang="scss">
+.item-list{
+  margin-bottom: 100px;
+}
+
 .page-title{
-  width: 100vw;
+  width: 90vw;
   margin: 0 auto;
   text-align: center;
   font-weight: bold;
@@ -144,6 +198,7 @@ export default {
 
 .page-title h4{
   margin: 0 auto;
+  padding-bottom: 20px;
 }
 
 .table-icon-place{
@@ -257,5 +312,13 @@ export default {
 
 .item-list-table{
   margin: 0 auto;
+}
+
+.search-table{
+  margin: 0 auto;
+  th{
+    padding-left: 20px;
+    padding-right:20px;
+  }
 }
 </style>

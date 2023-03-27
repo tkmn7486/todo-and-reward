@@ -8,32 +8,24 @@
         </div>
         <div class="carousel-view nes-balloon">
         <carousel :items-to-show="1">
-          <slide v-for="g in gacha_setting" :key="g.id">
-            <!-- <div class="gacha-card nes-balloon">
-                <div class="gacha-name">
-                    <h3 :class="'typewriter'+String(gacha_setting[0].gacha_name.length)">{{ gacha_setting[0].gacha_name }}</h3>
-                </div>
-                <div class="gacha-img-place">
-                    <img class="gacha-img" src="../assets/gacha.png">
-                </div>
-                <div class="btn-toolbar gacha-play-btn-place">
-                    <div class="btn-g">
-                        <button class="nes-btn gacha-play-btn" @click="playGacha('premium',1)">1回 {{ gacha_setting[0].spend_coins }}コイン</button>
-                        <button class="nes-btn gacha-play-btn" @click="playGacha('premium',6)">6回 {{ gacha_setting[0].spend_coins*5 }}コイン</button>
-                    </div>
-                </div>
-            </div> -->
+          <slide v-for="g, index in gacha_setting" :key="g.id">
             <div class="gacha-card">
                 <div class="gacha-name">
                     <h3 :class="'typewriter'+String(g.gacha_name.length)">{{ g.gacha_name }}</h3>
                 </div>
                 <div class="gacha-img-place">
-                    <img class="gacha-img" src="../assets/gacha.png">
+                    <img class="gacha-img" :src="g.gacha_img">
                 </div>
                 <div class="btn-toolbar gacha-play-btn-place">
                     <div class="btn-g">
-                        <button class="nes-btn gacha-play-btn" @click="playGacha('premium',1)">1回 {{ gacha_setting[0].spend_coins }}コイン</button>
-                        <button class="nes-btn gacha-play-btn" @click="playGacha('premium',6)">6回 {{ gacha_setting[0].spend_coins*5}}コイン</button>
+                        <button class="nes-btn gacha-play-btn" @click="playGacha(index,1)">
+                            <img class="gacha-btn-key" src="../assets/coin.png">
+                            {{g.spend_coins}}枚
+                        </button>
+                        <button class="nes-btn gacha-play-btn" @click="playGacha(index,1)">
+                            <img class="gacha-btn-key" src="../assets/gacha_img/premium_key.png">
+                            1個
+                        </button>
                     </div>
                 </div>
             </div>
@@ -102,7 +94,9 @@ export default {
 
     let gacha= ref(
         [
-            {name:"プレミアムガチャ",img:"../assets/gacha.png"}
+            {name:"premium",img:require("../assets/gacha_img/premium.png"),ss:"https://sheets.googleapis.com/v4/spreadsheets/1GRckIW0juHtiFHNSok8es6oW_miOV_9TNdiw7gLWnwc/values/premium!A1:E100?key=AIzaSyBYGo-htizvE31sI-GGUkMRsK0nZ7i5Wmw"},
+            {name:"play",img:require("../assets/gacha_img/blue_silver.png"),ss:"https://sheets.googleapis.com/v4/spreadsheets/1GRckIW0juHtiFHNSok8es6oW_miOV_9TNdiw7gLWnwc/values/play!A1:E100?key=AIzaSyBYGo-htizvE31sI-GGUkMRsK0nZ7i5Wmw"},
+            {name:"food",img:require("../assets/gacha_img/normal.png"),ss:"https://sheets.googleapis.com/v4/spreadsheets/1GRckIW0juHtiFHNSok8es6oW_miOV_9TNdiw7gLWnwc/values/food!A1:E100?key=AIzaSyBYGo-htizvE31sI-GGUkMRsK0nZ7i5Wmw"},
         ]
     )
 
@@ -123,58 +117,62 @@ export default {
     // 現在のコイン数
     let now_point = ref(0)
 
+    // ガチャデータの取得
     const getGachaData=async()=>{
         let comp_data1 = []
         gacha_setting.value = []
 
         gacha_data.value = []
 
-        let data1 = await axios.get('https://sheets.googleapis.com/v4/spreadsheets/1GRckIW0juHtiFHNSok8es6oW_miOV_9TNdiw7gLWnwc/values/premium!A1:E100?key=AIzaSyBYGo-htizvE31sI-GGUkMRsK0nZ7i5Wmw')
-        comp_data1 = [{r:[],sr:[],ssr:[]}]
-        gacha_setting.value.push(
-            {
-                gacha_id:"premium",
-                gacha_name:data1.data.values[0][3],
-                spend_coins: Number(data1.data.values[0][1])
+        for(let p=0; p<gacha.value.length; p++){
+            comp_data1.push({r:[],sr:[],ssr:[]})
+            let data1 = await axios.get(gacha.value[p].ss)
+            gacha_setting.value.push(
+                {
+                    gacha_id: gacha.value[p].name,
+                    gacha_name:data1.data.values[0][3],
+                    gacha_img: gacha.value[p].img,
+                    spend_coins: Number(data1.data.values[0][1])
+                }
+            )
+            console.log('ガチャの設定：', gacha_setting.value[p])
+            for(let i=2; i<data1.data.values.length;i++){
+                if(data1.data.values[i][4]=='ssr'){
+                    // SSRレアリティの配列へ追加
+                    comp_data1[p].ssr.push(
+                        {
+                            name: data1.data.values[i][0],
+                            img: data1.data.values[i][1],
+                            explain: data1.data.values[i][2],
+                            movie_type: data1.data.values[i][4]
+                        }
+                    )
+                }else if(data1.data.values[i][4]=='sr'){
+                    // SRレアリティの配列へ追加
+                    comp_data1[p].sr.push(
+                        {
+                            name: data1.data.values[i][0],
+                            img: data1.data.values[i][1],
+                            explain: data1.data.values[i][2],
+                            movie_type: data1.data.values[i][4]
+                        }
+                    )
+                }else{
+                    // Rレアリティの配列へ追加
+                    comp_data1[p].r.push(
+                        {
+                            name: data1.data.values[i][0],
+                            img: data1.data.values[i][1],
+                            explain: data1.data.values[i][2],
+                            movie_type: data1.data.values[i][4]
+                        }
+                    )
+                }
             }
-        )
-        console.log('ガチャの設定：', gacha_setting.value[0])
-        for(let i=2; i<data1.data.values.length;i++){
-            if(data1.data.values[i][4]=='ssr'){
-                // SSRレアリティの配列へ追加
-                comp_data1[0].ssr.push(
-                    {
-                        name: data1.data.values[i][0],
-                        img: data1.data.values[i][1],
-                        explain: data1.data.values[i][2],
-                        movie_type: data1.data.values[i][4]
-                    }
-                )
-            }else if(data1.data.values[i][4]=='sr'){
-                // SRレアリティの配列へ追加
-                comp_data1[0].sr.push(
-                    {
-                        name: data1.data.values[i][0],
-                        img: data1.data.values[i][1],
-                        explain: data1.data.values[i][2],
-                        movie_type: data1.data.values[i][4]
-                    }
-                )
-            }else{
-                // Rレアリティの配列へ追加
-                comp_data1[0].r.push(
-                    {
-                        name: data1.data.values[i][0],
-                        img: data1.data.values[i][1],
-                        explain: data1.data.values[i][2],
-                        movie_type: data1.data.values[i][4]
-                    }
-                )
-            }
-        }
-        console.log('data1完了')
+            console.log('data1完了')
 
-        gacha_data.value = comp_data1
+            gacha_data.value = comp_data1
+        }
 
         console.log('ガチャのデータ：',gacha_data.value)
 
@@ -184,136 +182,135 @@ export default {
     const playGacha=async(gacha_type,times)=>{
         let choice = confirm(times+'回引きますか？')
         if(choice == true){
-            if(Number(now_point.value) < gacha_setting.value[0].spend_coins){
+            if(Number(now_point.value) < gacha_setting.value[gacha_type].spend_coins){
                 console.log(now_point.value)
                 console.log(gacha_setting.value[0].spend_coins)
                 alert('コインが足りません')
             }else{
-                now_point.value = Number(now_point.value)-Number(gacha_setting.value[0].spend_coins)
+                now_point.value = Number(now_point.value)-Number(gacha_setting.value[gacha_type].spend_coins)
                 await supabase.from('app_setting').delete().eq('type', 'hold_point')
                 await supabase.from('app_setting').insert({type:"hold_point",contents:now_point.value});
                 localStorage.setItem('now_point',now_point.value)
                 prize_name.value = ''
                 prize_movie_type.value = ''
                 prize_img.value = ''
-                if(gacha_type == 'premium'){
-                    console.log('premiumのガチャを実行')
-                    let random_value = Math.floor(Math.random() * 100);
-                    console.log('レアリティ乱数：', random_value)
 
-                    // レアリティ決定
-                    if(random_value >=95){
-                        // SSRクラス
-                        prize_movie_type.value = 'ssr'
-                    }else if(random_value >=75){
-                        // SRクラス
-                        prize_movie_type.value = 'sr'
+                console.log('ガチャを実行:',gacha.value[gacha_type].name)
+                let random_value = Math.floor(Math.random() * 100);
+                console.log('レアリティ乱数：', random_value)
+
+                // レアリティ決定
+                if(random_value >=95){
+                    // SSRクラス
+                    prize_movie_type.value = 'ssr'
+                }else if(random_value >=75){
+                    // SRクラス
+                    prize_movie_type.value = 'sr'
+                }else{
+                    // Rクラス
+                    prize_movie_type.value = 'r'
+                }
+
+                console.log('レアリティ確定:',prize_movie_type.value)
+
+                console.log('配列中身：',gacha_data.value[gacha_type].sr)
+
+                // let json_file = localStorage.getItem('my_items')
+                // let item_list = JSON.parse(json_file)
+                // console.log("アイテムリストの１つ目",item_list[0])
+                if(prize_movie_type.value == 'ssr'){
+                    let random = Math.floor(Math.random() * Number(gacha_data.value[gacha_type].ssr.length));
+                    console.log('SSRの'+random+'番を選択')
+                    get_prize.value = gacha_data.value[gacha_type].ssr[random]
+                    console.log('獲得アイテム：', get_prize.value)
+                    if(localStorage.getItem('my_items') != null){
+                        // console.log(item_list)
+                        console.log("獲得品：",get_prize.value)
+                        // await item_list.push(get_prize.value)
+                        // localStorage.setItem('my_items',JSON.stringify(item_list))
+                        await supabase.from('got_items').insert(
+                            {
+                                item_name: get_prize.value.name,
+                                img: get_prize.value.img,
+                                explain: get_prize.value.explain,
+                                rare: get_prize.value.movie_type
+                            }
+                        );
                     }else{
-                        // Rクラス
-                        prize_movie_type.value = 'r'
+                        // localStorage.setItem('my_items',JSON.stringify([get_prize.value]))
+                        await supabase.from('got_items').insert(
+                            {
+                                item_name: get_prize.value.name,
+                                img: get_prize.value.img,
+                                explain: get_prize.value.explain,
+                                rare: get_prize.value.movie_type
+                            }
+                        );
                     }
-
-                    console.log('レアリティ確定:',prize_movie_type.value)
-
-                    console.log('配列中身：',gacha_data.value[0].sr)
-
-                    // let json_file = localStorage.getItem('my_items')
-                    // let item_list = JSON.parse(json_file)
-                    // console.log("アイテムリストの１つ目",item_list[0])
-                    if(prize_movie_type.value == 'ssr'){
-                        let random = Math.floor(Math.random() * Number(gacha_data.value[0].ssr.length));
-                        console.log('SSRの'+random+'番を選択')
-                        get_prize.value = gacha_data.value[0].ssr[random]
-                        console.log('獲得アイテム：', get_prize.value)
-                        if(localStorage.getItem('my_items') != null){
-                            // console.log(item_list)
-                            console.log("獲得品：",get_prize.value)
-                            // await item_list.push(get_prize.value)
-                            // localStorage.setItem('my_items',JSON.stringify(item_list))
-                            await supabase.from('got_items').insert(
-                                {
-                                    item_name: get_prize.value.name,
-                                    img: get_prize.value.img,
-                                    explain: get_prize.value.explain,
-                                    rare: get_prize.value.movie_type
-                                }
-                            );
-                        }else{
-                            // localStorage.setItem('my_items',JSON.stringify([get_prize.value]))
-                            await supabase.from('got_items').insert(
-                                {
-                                    item_name: get_prize.value.name,
-                                    img: get_prize.value.img,
-                                    explain: get_prize.value.explain,
-                                    rare: get_prize.value.movie_type
-                                }
-                            );
-                        }
-                        prize_name.value = gacha_data.value[0].ssr[random].name
-                        prize_img.value = gacha_data.value[0].ssr[random].img
-                    }else if(prize_movie_type.value == 'sr'){
-                        let random = Math.floor(Math.random() * Number(gacha_data.value[0].sr.length));
-                        console.log('SRの'+random+'番を選択')
-                        get_prize.value = gacha_data.value[0].sr[random]
-                        console.log('獲得アイテム：', get_prize.value)
-                        if(localStorage.getItem('my_items') != null){
-                            console.log("獲得品：",get_prize.value)
-                            // console.log(item_list)
-                            // await item_list.push(get_prize.value)
-                            // localStorage.setItem('my_items',JSON.stringify(item_list))
-                            await supabase.from('got_items').insert(
-                                {
-                                    item_name: get_prize.value.name,
-                                    img: get_prize.value.img,
-                                    explain: get_prize.value.explain,
-                                    rare: get_prize.value.movie_type
-                                }
-                            );
-                        }else{
-                            localStorage.setItem('my_items',JSON.stringify([get_prize.value]))
-                            await supabase.from('got_items').insert(
-                                {
-                                    item_name: get_prize.value.name,
-                                    img: get_prize.value.img,
-                                    explain: get_prize.value.explain,
-                                    rare: get_prize.value.movie_type
-                                }
-                            );
-                        }
-                        prize_name.value = gacha_data.value[0].sr[random].name
-                        prize_img.value = gacha_data.value[0].sr[random].img
+                    prize_name.value = gacha_data.value[gacha_type].ssr[random].name
+                    prize_img.value = gacha_data.value[gacha_type].ssr[random].img
+                }else if(prize_movie_type.value == 'sr'){
+                    let random = Math.floor(Math.random() * Number(gacha_data.value[0].sr.length));
+                    console.log('SRの'+random+'番を選択')
+                    get_prize.value = gacha_data.value[gacha_type].sr[random]
+                    console.log('獲得アイテム：', get_prize.value)
+                    if(localStorage.getItem('my_items') != null){
+                        console.log("獲得品：",get_prize.value)
+                        // console.log(item_list)
+                        // await item_list.push(get_prize.value)
+                        // localStorage.setItem('my_items',JSON.stringify(item_list))
+                        await supabase.from('got_items').insert(
+                            {
+                                item_name: get_prize.value.name,
+                                img: get_prize.value.img,
+                                explain: get_prize.value.explain,
+                                rare: get_prize.value.movie_type
+                            }
+                        );
                     }else{
-                        let random = Math.floor(Math.random() * Number(gacha_data.value[0].r.length));
-                        console.log('Rの'+random+'番を選択')
-                        get_prize.value = gacha_data.value[0].r[random]
-                        console.log('獲得アイテム：', get_prize.value)
-                        if(localStorage.getItem('my_items') != null){
-                            console.log("獲得品：",get_prize.value)
-                            // console.log(item_list)
-                            // await item_list.push(get_prize.value)
-                            // localStorage.setItem('my_items',JSON.stringify(item_list))
-                            await supabase.from('got_items').insert(
-                                {
-                                    item_name: get_prize.value.name,
-                                    img: get_prize.value.img,
-                                    explain: get_prize.value.explain,
-                                    rare: get_prize.value.movie_type
-                                }
-                            );
-                        }else{
-                            localStorage.setItem('my_items',JSON.stringify([get_prize.value]))
-                            await supabase.from('got_items').insert(
-                                {
-                                    item_name: get_prize.value.name,
-                                    img: get_prize.value.img,
-                                    explain: get_prize.value.explain,
-                                    rare: get_prize.value.movie_type
-                                }
-                            );
-                        }
-                        prize_name.value = gacha_data.value[0].r[random].name
-                        prize_img.value = gacha_data.value[0].r[random].img
+                        localStorage.setItem('my_items',JSON.stringify([get_prize.value]))
+                        await supabase.from('got_items').insert(
+                            {
+                                item_name: get_prize.value.name,
+                                img: get_prize.value.img,
+                                explain: get_prize.value.explain,
+                                rare: get_prize.value.movie_type
+                            }
+                        );
                     }
+                    prize_name.value = gacha_data.value[gacha_type].sr[random].name
+                    prize_img.value = gacha_data.value[gacha_type].sr[random].img
+                }else{
+                    let random = Math.floor(Math.random() * Number(gacha_data.value[gacha_type].r.length));
+                    console.log('Rの'+random+'番を選択')
+                    get_prize.value = gacha_data.value[gacha_type].r[random]
+                    console.log('獲得アイテム：', get_prize.value)
+                    if(localStorage.getItem('my_items') != null){
+                        console.log("獲得品：",get_prize.value)
+                        // console.log(item_list)
+                        // await item_list.push(get_prize.value)
+                        // localStorage.setItem('my_items',JSON.stringify(item_list))
+                        await supabase.from('got_items').insert(
+                            {
+                                item_name: get_prize.value.name,
+                                img: get_prize.value.img,
+                                explain: get_prize.value.explain,
+                                rare: get_prize.value.movie_type
+                            }
+                        );
+                    }else{
+                        localStorage.setItem('my_items',JSON.stringify([get_prize.value]))
+                        await supabase.from('got_items').insert(
+                            {
+                                item_name: get_prize.value.name,
+                                img: get_prize.value.img,
+                                explain: get_prize.value.explain,
+                                rare: get_prize.value.movie_type
+                            }
+                        );
+                    }
+                    prize_name.value = gacha_data.value[gacha_type].r[random].name
+                    prize_img.value = gacha_data.value[gacha_type].r[random].img
                 }
                 console.log("動画タイプ：",prize_movie_type.value)
                 movie_name.value = prize_movie_type.value
@@ -385,12 +382,17 @@ export default {
     margin: 0 auto;
 }
 
+.gacha-img-place img{
+    width: 80%;
+}
+
 #gacha_video{
     width: 100%;
     position:fixed;
     top:0;
     left:0;
-    width: 100vw;
+    max-width: 100vw;
+    height: 100vh;
 }
 
 .gacha-video-inv{
@@ -434,10 +436,6 @@ export default {
     width: 80%;
 }
 
-.gacha-card img{
-    width: 80%;
-}
-
 .gacha-card button{
     margin:0 auto;
 }
@@ -465,5 +463,30 @@ export default {
 
 .btn-g{
     margin: 0 auto;
+}
+
+.btn-g button{
+    display: inline-block;
+}
+
+.carousel-view{
+    min-width: 350px;
+    max-width: 80%;
+    padding: 10px;
+}
+
+.gacha-perform{
+    position: fixed;
+    top:0;
+    left:0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(0, 0, 0);
+    z-index:100;
+}
+
+.gacha-btn-key{
+    width: 30px;
+    margin: 5px;
 }
 </style>
