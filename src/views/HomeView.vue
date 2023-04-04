@@ -7,7 +7,7 @@
           <tr v-for="todo in todo_list" :key="todo.id">
             <!-- <td class="type-icon-place"><img :src="require('../assets/'+todo.type+'.png')"></td> -->
             <td>
-              <p class="nes-balloon">{{ todo.type }}</p>
+              <p class="nes-balloon type">{{ todo.type }}</p>
             </td>
             <td>
               <p :class="'typewriter'+String(todo.name.length)">{{ todo.name }}</p>
@@ -153,7 +153,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .gacha-img{
   width: 30
 }
@@ -173,5 +173,14 @@ export default {
 
 table .nes-balloon{
   padding:0;
+}
+
+.todo-list{
+  .type{
+    color: black;
+  }
+  p{
+    color: white;
+  }
 }
 </style>

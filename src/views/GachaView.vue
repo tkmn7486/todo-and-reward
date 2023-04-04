@@ -372,7 +372,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .gacha-img{
     width: 300px;
 }
@@ -384,6 +384,10 @@ export default {
 
 .gacha-img-place img{
     width: 80%;
+}
+
+.loading-view{
+    color: white;
 }
 
 #gacha_video{
@@ -414,6 +418,7 @@ export default {
 
 .gacha-play-btn{
     margin: 10px;
+    
 }
 
 .get-prize{
@@ -440,8 +445,8 @@ export default {
     margin:0 auto;
 }
 .get-item-img-place{
-    background-color: rgb(0, 0, 0);
-    filter:drop-shadow(0px 0px 1px #fdfdfd);
+    background-color: rgb(255, 255, 255);
+    // filter:drop-shadow(0px 0px 1px #fdfdfd);
 }
 
 .gacha-name{
@@ -457,8 +462,13 @@ export default {
     width: 40px;
 }
 
-.point-view label{
-    vertical-align: -3px;
+.point-view{
+    label{
+      vertical-align: -3px;
+    }
+    h5{
+        color: white;
+    }
 }
 
 .btn-g{
@@ -488,5 +498,14 @@ export default {
 .gacha-btn-key{
     width: 30px;
     margin: 5px;
+}
+
+.gacha-result{
+    h3{
+        color: white;
+    }
+    p{
+        color: white;
+    }
 }
 </style>

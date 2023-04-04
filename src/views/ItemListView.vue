@@ -76,8 +76,8 @@
             <p :class="'card-text typewriter'+String(selected_item[0].explain.length)">{{ selected_item[0].explain }}</p>
           </div>
           <br>
-          <button class="btn btn-outline-dark" @click="useItem()">使用する</button>
-          <button class="btn btn-outline-dark" @click="closeDetail()">戻る</button>
+          <button class="nes-btn detail-card-btn" @click="useItem()">使用する</button>
+          <button class="nes-btn detail-card-btn" @click="closeDetail()">戻る</button>
         </div>
 
       </div>
@@ -185,6 +185,10 @@ export default {
 </script>
 
 <style lang="scss">
+*{
+  color: white;
+}
+
 .item-list{
   margin-bottom: 100px;
 }
@@ -235,6 +239,7 @@ export default {
   width: 95%;
   margin: 0 auto;
   padding: 20px 0;
+
 }
 
 .item-card{
@@ -246,6 +251,15 @@ export default {
 .table-icon-place{
   height: 60px;
   width: 60px;
+}
+
+.item-detail-card{
+  h5{
+    color: black;
+  }
+  p{
+    color: black;
+  }
 }
 
 .item-detail-card-img{
@@ -287,6 +301,10 @@ export default {
   }
 }
 
+.card-text{
+  text-align: left;
+}
+
 .item-list-item{
   width: 70vw;
 }
@@ -308,6 +326,12 @@ export default {
 
 .item-comment{
   padding: 20px;
+  width: 90%;
+  margin: 0 auto;
+  p{
+    overflow-wrap:break-word;
+    display: block;
+  }
 }
 
 .item-list-table{
@@ -320,5 +344,15 @@ export default {
     padding-left: 20px;
     padding-right:20px;
   }
+  td{
+    select{
+      color: black;
+      text-align: center;
+    }
+  }
+}
+
+.detail-card-btn{
+  margin: 10px;
 }
 </style>

@@ -1,38 +1,39 @@
 <template>
-  <nav>
-    <div class="nav-menu">
-      <table class="nav-table">
-        <tr>
-          <td>
-            <router-link to="/">
-              <img src="./assets/nav_icon/task.png" class="nav-icon">
-              <p>タスク</p>
-              <small>▲</small>
-            </router-link>
-          </td>
-          <td>
-            <router-link to="/gacha">
-              <img src="./assets/nav_icon/gacha.png" class="nav-icon">
-              <p>宝箱</p>
-              <small>▲</small>
-            </router-link>
-          </td>
-          <td>
-            <router-link to="/item_list">
-              <img src="./assets/nav_icon/item.png" class="nav-icon">
-              <p>もちもの</p>
-              <small>▲</small>
-            </router-link>
-          </td>
-        </tr>
-      </table>
-    </div>
-  </nav>
-  <!-- <div class="reload-btn">
-    <button class="btn btn-sm" @click="forceReload()">🔄</button>
-  </div> -->
-  <router-view id="router-view" />
-  <p class=""></p>
+  <div id="app">
+    <nav>
+      <div class="nav-menu">
+        <table class="nav-table">
+          <tr>
+            <td>
+              <router-link to="/">
+                <img src="./assets/nav_icon/task.png" class="nav-icon">
+                <p>タスク</p>
+                <small>▲</small>
+              </router-link>
+            </td>
+            <td>
+              <router-link to="/gacha">
+                <img src="./assets/nav_icon/gacha.png" class="nav-icon">
+                <p>宝箱</p>
+                <small>▲</small>
+              </router-link>
+            </td>
+            <td>
+              <router-link to="/item_list">
+                <img src="./assets/nav_icon/item.png" class="nav-icon">
+                <p>もちもの</p>
+                <small>▲</small>
+              </router-link>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </nav>
+    <!-- <div class="reload-btn">
+      <button class="btn btn-sm" @click="forceReload()">🔄</button>
+    </div> -->
+    <router-view id="router-view" />
+  </div>
 </template>
 
 <script>
@@ -80,12 +81,17 @@ export default {
     src: url('../src/assets/fonts/PixelMplus10-Regular.ttf') format('truetype');
 }
 
+html{
+  background-color: black;
+}
+
 #app {
   -webkit-font-smoothing: 'dot-style-10';
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
   font-family:'dot-style-10';
+  background-color: black;
 }
 
 .card{
@@ -96,6 +102,7 @@ export default {
   margin-top: 50px;
   z-index: -1;
   background-color:none;
+  min-height: 100vh;
 }
 
 .nav-menu{
@@ -156,188 +163,289 @@ nav a.router-link-exact-active {
 .typewriter1{
   overflow: hidden; /*はみ出た要素を非表示に*/
   white-space: nowrap; /*1行に*/
-  animation: typing1 0.3s steps(1, end) forwards;
+  animation: typing1 0.3s steps(1, end) ;
 /*animation: アニメーション名｜時間｜分割数｜ループ */
 }
 
 .typewriter2{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing2 0.3s steps(2, end) forwards;
+  animation: typing2 0.3s steps(2, end) ;
 }
 
 .typewriter3{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing3 0.3s steps(3, end) forwards;
+  animation: typing3 0.3s steps(3, end) ;
 }
 
 .typewriter4{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing4 0.3s steps(4, end) forwards;
+  animation: typing4 0.3s steps(4, end) ;
 }
 
 .typewriter5{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing5 0.3s steps(5, end) forwards;
+  animation: typing5 0.3s steps(5, end) ;
 }
 
 .typewriter6{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing6 0.3s steps(6, end) forwards;
+  animation: typing6 0.3s steps(6, end) ;
 }
 
 .typewriter7{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing7 0.3s steps(7, end) forwards;
+  animation: typing7 0.3s steps(7, end) ;
 }
 
 .typewriter8{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing8 0.3s steps(8, end) forwards;
+  animation: typing8 0.3s steps(8, end) ;
 }
 
 .typewriter9{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing9 0.3s steps(9, end) forwards;
+  animation: typing9 0.3s steps(9, end) ;
 }
 
 .typewriter10{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing10 0.3s steps(10, end) forwards;
+  animation: typing10 0.3s steps(10, end) ;
 }
 
 .typewriter11{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing11 0.3s steps(11, end) forwards;
+  animation: typing11 0.3s steps(11, end) ;
 }
 
 .typewriter12{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing12 0.3s steps(12, end) forwards;
+  animation: typing12 0.3s steps(12, end) ;
 }
 
 .typewriter13{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing13 0.3s steps(13, end) forwards;
+  animation: typing13 0.3s steps(13, end) ;
 }
 
 .typewriter14{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing14 0.3s steps(14, end) forwards;
+  animation: typing14 0.3s steps(14, end) ;
 }
 
 .typewriter15{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing15 0.3s steps(15, end) forwards;
+  animation: typing15 0.3s steps(15, end) ;
 }
 
 .typewriter16{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing16 0.3s steps(16, end) forwards;
+  animation: typing16 0.3s steps(16, end) ;
 }
 
 .typewriter17{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing17 0.3s steps(17, end) forwards;
+  animation: typing17 0.3s steps(17, end) ;
 }
 
 .typewriter18{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing18 0.3s steps(18, end) forwards;
+  animation: typing18 0.3s steps(18, end) ;
 }
 
 .typewriter19{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing19 0.3s steps(19, end) forwards;
+  animation: typing19 0.3s steps(19, end) ;
 }
 
 .typewriter20{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing20 0.3s steps(20, end) forwards;
+  animation: typing20 0.3s steps(20, end) ;
 }
 
 .typewriter21{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing21 0.3s steps(21, end) forwards;
+  animation: typing21 0.3s steps(21, end) ;
 }
 
 .typewriter22{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing22 0.3s steps(22, end) forwards;
+  animation: typing22 0.3s steps(22, end) ;
 }
 
 .typewriter23{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing23 0.3s steps(23, end) forwards;
+  animation: typing23 0.3s steps(23, end) ;
 }
 
 .typewriter24{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing24 0.3s steps(24, end) forwards;
+  animation: typing24 0.3s steps(24, end) ;
 }
 
 .typewriter25{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing25 0.3s steps(25, end) forwards;
+  animation: typing25 0.3s steps(25, end) ;
 }
 
 .typewriter26{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing26 0.3s steps(26, end) forwards;
+  animation: typing26 0.3s steps(26, end) ;
 }
 
 .typewriter27{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing27 0.3s steps(27, end) forwards;
+  animation: typing27 0.3s steps(27, end) ;
 }
 
 .typewriter28{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing28 0.3s steps(28, end) forwards;
+  animation: typing28 0.3s steps(28, end) ;
 }
 
 .typewriter29{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing29 0.3s steps(29, end) forwards;
+  animation: typing29 0.3s steps(29, end) ;
 }
 
 .typewriter30{
+  overflow: visible;
+  white-space: normal;
+  animation: typing30 0.3s steps(30, end);
+}
+
+.typewriter31{
   overflow: hidden;
   white-space: nowrap;
-  animation: typing30 0.3s steps(30, end) forwards;
+  animation: typing31 0.3s steps(31, end);
+}
+.typewriter32{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing32 0.3s steps(32, end) ;
+}
+.typewriter33{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing33 0.3s steps(33, end) ;
+}
+.typewriter34{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing34 0.3s steps(34, end) ;
+}
+.typewriter35{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing35 0.3s steps(35, end) ;
+}
+.typewriter36{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing36 0.3s steps(36, end) ;
+}
+.typewriter37{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing37 0.3s steps(37, end) ;
+}
+.typewriter38{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing38 0.3s steps(38, end) ;
+}
+.typewriter39{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing39 0.3s steps(39, end) ;
+}
+.typewriter40{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing40 0.3s steps(40, end) ;
+}
+.typewriter41{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing41 0.3s steps(41, end) ;
+}
+.typewriter42{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing42 0.3s steps(42, end) ;
+}
+.typewriter43{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing43 0.3s steps(43, end) ;
+}
+.typewriter44{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing44 0.3s steps(44, end) ;
+}
+.typewriter45{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing45 0.3s steps(45, end) ;
+}
+.typewriter46{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing46 0.3s steps(46, end) ;
+}
+.typewriter47{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing47 0.3s steps(47, end) ;
+}
+.typewriter48{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing48 0.3s steps(48, end) ;
+}
+.typewriter49{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing49 0.3s steps(49, end) ;
+}
+.typewriter50{
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing50 0.3s steps(50, end) ;
 }
 
 .typewriter-btn{
   overflow: hidden;
   white-space: nowrap;
-  animation: typingBtn 0.3s steps(3, end) forwards;
+  animation: typingBtn 0.3s steps(3, end) ;
 }
 
 @keyframes typing1{
@@ -489,6 +597,88 @@ nav a.router-link-exact-active {
   0% { width: 0%; }
   100% { width: 30em; }
 }
+
+@keyframes typing31{
+  0% { width: 0%; }
+  100% { width: 31em; }
+}
+@keyframes typing32{
+  0% { width: 0%; }
+  100% { width: 32em; }
+}
+@keyframes typing33{
+  0% { width: 0%; }
+  100% { width: 33em; }
+}
+@keyframes typing34{
+  0% { width: 0%; }
+  100% { width: 34em; }
+}
+@keyframes typing35{
+  0% { width: 0%; }
+  100% { width: 35em; }
+}
+@keyframes typing36{
+  0% { width: 0%; }
+  100% { width: 36em; }
+}
+@keyframes typing37{
+  0% { width: 0%; }
+  100% { width: 37em; }
+}
+@keyframes typing38{
+  0% { width: 0%; }
+  100% { width: 38em; }
+}
+@keyframes typing39{
+  0% { width: 0%; }
+  100% { width: 39em; }
+}
+@keyframes typing40{
+  0% { width: 0%; }
+  100% { width: 40em; }
+}
+@keyframes typing41{
+  0% { width: 0%; }
+  100% { width: 41em; }
+}
+@keyframes typing42{
+  0% { width: 0%; }
+  100% { width: 42em; }
+}
+@keyframes typing43{
+  0% { width: 0%; }
+  100% { width: 43em; }
+}
+@keyframes typing44{
+  0% { width: 0%; }
+  100% { width: 44em; }
+}
+@keyframes typing45{
+  0% { width: 0%; }
+  100% { width: 45em; }
+}
+@keyframes typing46{
+  0% { width: 0%; }
+  100% { width: 46em; }
+}
+@keyframes typing47{
+  0% { width: 0%; }
+  100% { width: 47em; }
+}
+@keyframes typing48{
+  0% { width: 0%; }
+  100% { width: 48em; }
+}
+@keyframes typing49{
+  0% { width: 0%; }
+  100% { width: 49em; }
+}
+@keyframes typing50{
+  0% { width: 0%; }
+  100% { width: 50em; }
+}
+
 
 @keyframes typingBtn{
   0% { width: 0%; }
