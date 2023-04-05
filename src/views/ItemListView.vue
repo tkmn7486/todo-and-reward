@@ -1,5 +1,5 @@
 <template>
-  <div class="item-list">
+  <div>
     <!-- 現在の所持品 -->
     <div class="now-in-possession sub-card" v-if="now_view == 'hold_items'">
       <div class="page-title">
@@ -29,34 +29,35 @@
           </tr>
         </table>
       </div>
-
-      <table class="item-list-table">
-        <tbody>
-          <tr v-for="item,index in item_list" :key="item.id">
-            <td>
-              <div :class="'nes-balloon item-list-item '+item.rare" @click="openItemDetail(item,index)">
-                <table>
-                  <tr>
-                    <td class="table-icon-place">
-                      <div class="table-item-icon-frame">
-                        <img :src= "require('../assets/item/'+item.img)" class="table-item-icon">
-                      </div>
-                    </td>
-                    <td class="table-item-name-place">
-                      <div :class="'table-item-name-frame typewriter'+String(item.item_name.length)">
-                        {{ item.item_name }}
-                      </div>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="item-list">
+        <table class="item-list-table">
+          <tbody>
+            <tr v-for="item,index in item_list" :key="item.id">
+              <td>
+                <div :class="'nes-balloon item-list-item '+item.rare" @click="openItemDetail(item,index)">
+                  <table>
+                    <tr>
+                      <td class="table-icon-place">
+                        <div class="table-item-icon-frame">
+                          <img :src= "require('../assets/item/'+item.img)" class="table-item-icon">
+                        </div>
+                      </td>
+                      <td class="table-item-name-place">
+                        <div :class="'table-item-name-frame typewriter'+String(item.item_name.length)">
+                          {{ item.item_name }}
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <!-- 全アイテム一覧 -->
-    <div class="all-item-list" v-else-if="now_view == 'all_items'">
+    <div class="all-item-list item-list" v-else-if="now_view == 'all_items'">
 
     </div>
 
@@ -239,7 +240,6 @@ export default {
   width: 95%;
   margin: 0 auto;
   padding: 20px 0;
-
 }
 
 .item-card{
@@ -251,6 +251,14 @@ export default {
 .table-icon-place{
   height: 60px;
   width: 60px;
+}
+
+.item-detail{
+  position: fixed;
+  top:50vh;
+  left:50vw;
+  transform: translateX(-50%) translateY(-50%);
+  width: 90vw;
 }
 
 .item-detail-card{

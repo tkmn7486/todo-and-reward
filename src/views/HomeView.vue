@@ -2,9 +2,23 @@
   <div class="home">
     <!-- todoリスト -->
     <div class="todo-list" v-if="now_view == 'main'">
+      <div class="search-box">
+        <div class="input-btn">
+          <input type="radio" value="" v-model="radio_btn"><label>ぜんぶ</label>
+        </div>
+        <div class="input-btn">
+          <input type="radio" value="daily" v-model="radio_btn"><label>デイリー</label>
+        </div>
+        <div class="input-btn">
+          <input type="radio" value="weekly" v-model="radio_btn"><label>ウィークリー</label>
+        </div>
+        <div class="input-btn">
+          <input type="radio" value="event" v-model="radio_btn"><label>イベント</label>
+        </div>
+      </div>
       <table class="table">
         <tbody>
-          <tr v-for="todo in todo_list" :key="todo.id">
+          <tr v-for="todo in todo_list" :key="todo.id" class="task-box">
             <!-- <td class="type-icon-place"><img :src="require('../assets/'+todo.type+'.png')"></td> -->
             <td>
               <p class="nes-balloon type">{{ todo.type }}</p>
@@ -49,6 +63,9 @@ export default {
     let now_view = ref('loading')
 
     let todo_list = ref([])
+    let origin_list = ref([])
+
+    let radio_btn = ref('')
 
     // データ取得
     const getFbData=async(table_name, where_search)=>{
@@ -92,7 +109,12 @@ export default {
         )
       }
       console.log("todo_list:", todo_list.value)
+      origin_list.value = todo_list.value
       now_view.value = 'main'
+    }
+
+    const sortList=()=>{
+
     }
 
     const getAchieve=async(i)=>{
@@ -142,12 +164,15 @@ export default {
     return{
       now_view,
       todo_list,
+      origin_list,
+      radio_btn,
       getTodoList,
       getAchieve,
       backHome,
       getFbData,
       addFbData,
-      deleteFbData
+      deleteFbData,
+      sortList
     }
   }
 }
@@ -182,5 +207,19 @@ table .nes-balloon{
   p{
     color: white;
   }
+}
+
+.input-btn{
+  display: inline-block;
+  padding-left:5px;
+  label{
+    color: white;
+  }
+}
+
+.search-box{
+  // border-top:dashed 5px white;
+  // border-bottom:dashed 5px white;
+  margin-bottom: 10px;
 }
 </style>

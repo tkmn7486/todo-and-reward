@@ -450,6 +450,7 @@ export default {
 }
 
 .gacha-name{
+    color: black;
     margin: 0 auto;
 }
 
