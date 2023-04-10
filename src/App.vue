@@ -21,7 +21,14 @@
             <td>
               <router-link to="/item_list">
                 <img src="./assets/nav_icon/item.png" class="nav-icon">
-                <p>もちもの</p>
+                <p>所持品</p>
+                <small>▲</small>
+              </router-link>
+            </td>
+            <td>
+              <router-link to="/alchemy">
+                <img src="./assets/nav_icon/alchemy.png" class="nav-icon">
+                <p>錬金術</p>
                 <small>▲</small>
               </router-link>
             </td>

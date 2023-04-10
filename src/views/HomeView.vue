@@ -27,7 +27,7 @@
               <p :class="'typewriter'+String(todo.name.length)">{{ todo.name }}</p>
             </td>
             <td class="todo-name-td">
-              <button class="nes-btn typewriter-btn" @click="getAchieve(todo.point)">獲得</button>
+              <button class="nes-btn typewriter-btn" @click="getAchieve(todo.point)"></button>
             </td>
           </tr>
         </tbody>
@@ -221,5 +221,9 @@ table .nes-balloon{
   // border-top:dashed 5px white;
   // border-bottom:dashed 5px white;
   margin-bottom: 10px;
+}
+
+.todo-list{
+  padding-bottom: 100px;
 }
 </style>
