@@ -1,5 +1,8 @@
 # todo-and-reward
 
+ここに公開
+https://todo-and-reward-tkmn7486.netlify.app/gacha
+
 ## Project setup
 ```
 yarn install
